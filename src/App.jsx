@@ -22,6 +22,7 @@ function App() {
 					<Route path='marks/:id' element={<Marks />} />
 					<Route path='report' element={<Report />} />
 					<Route path='profile' element={<Profile />} />
+					<Route path='*' element={<NotFound />} />
 				</Route>
 				<Route path='*' element={<NotFound />} />
 			</Routes>

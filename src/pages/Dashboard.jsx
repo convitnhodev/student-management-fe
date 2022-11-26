@@ -5,7 +5,7 @@ import { Link, Outlet } from 'react-router-dom';
  * This is the main page of the application.
  * @returns JSX.Element as a page
  */
-export default function Dashboard({ match }) {
+export default function Dashboard() {
 	return (
 		<>
 			<nav>
