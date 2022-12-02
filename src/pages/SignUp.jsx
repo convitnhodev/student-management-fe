@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 export default function SignUp() {
 	return (
 		<>
-			<div>Sign Up Page</div>
+			<div className='text-3xl font-bold underline'>Sign Up Page</div>
 			<div>
 				<Link to='/dashboard'>Go to Dashboard</Link>
 			</div>
