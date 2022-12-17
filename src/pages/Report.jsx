@@ -6,5 +6,8 @@ import React from 'react';
  * @returns JSX.Element as a page
  */
 export default function Report() {
-	return <div>Report</div>;
+	
+	return <div>
+		
+		</div>;
 }
