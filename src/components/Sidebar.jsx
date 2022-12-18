@@ -1,5 +1,15 @@
 import React from 'react';
+import SidebarIcon from './SidebarIcon';
 import { Link } from 'react-router-dom';
+import {
+	FaSchool,
+	FaHome,
+	FaUserGraduate,
+	FaClipboardCheck,
+	FaClipboardList,
+	FaUser,
+	FaSignOutAlt,
+} from 'react-icons/fa';
 
 /**
  * This is the sidebar component.
@@ -7,27 +17,29 @@ import { Link } from 'react-router-dom';
  */
 export default function Sidebar() {
 	return (
-		<nav>
-			<ul>
-				<li>
-					<Link to={``}>Home</Link>
-				</li>
-				<li>
-					<Link to={`student/1`}>Student</Link>
-				</li>
-				<li>
-					<Link to={`marks/2`}>Marks</Link>
-				</li>
-				<li>
-					<Link to={`report`}>Report</Link>
-				</li>
-				<li>
-					<Link to={`profile`}>Profile</Link>
-				</li>
-				<li>
-					<Link to={`../signin`}>Logout</Link>
-				</li>
-			</ul>
-		</nav>
+		<div className='fixed top-0 left-0 h-screen w-[250px] flex flex-col bg-violet-900'>
+			<Link to={``}>
+				<SidebarIcon icon={<FaSchool size="35" />} text='Student Management' />
+			</Link>
+			<hr className='border-violet-500' />
+			<Link to={``}>
+				<SidebarIcon icon={<FaHome size="30" />} text='Home' />
+			</Link>
+			<Link to={`student/1`}>
+				<SidebarIcon icon={<FaUserGraduate size="30" />} text='Student' />
+			</Link>
+			<Link to={`marks/2`}>
+				<SidebarIcon icon={<FaClipboardCheck size="30" />} text='Marks' />
+			</Link>
+			<Link to={`report`}>
+				<SidebarIcon icon={<FaClipboardList size="30" />} text='Report' />
+			</Link>
+			<Link to={`profile`} className="mt-auto" >
+				<SidebarIcon icon={<FaUser size="30" />} text='Profile' />
+			</Link>
+			<Link to={`../signin`}>
+				<SidebarIcon icon={<FaSignOutAlt size="30" />} text='Sign Out' />
+			</Link>
+		</div>
 	);
 }
