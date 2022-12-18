@@ -14,7 +14,7 @@ export default function Profile() {
     return (
         <>
             <div className="flex sm:flex-col xl:flex-row my-4 bg-white sm:w-full w-full">
-                <div className=" flex flex-col w-full">
+                <div className=" flex flex-col w-full h-fit">
                     <div className="flex-1  h-fit px-8 py-6 border-solid border border-purple-700 rounded-md mx-4 mb-4">
                         <h2 className="text-purple-700 font-bold text-2xl mb-8">Hồ sơ cá nhân</h2>
                         <div className="grid grid-cols-4 gap-4 mb-8">
