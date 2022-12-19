@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import Table from '../components/Table';
 
 /**
@@ -26,6 +27,25 @@ export default function Marks() {
 		]
 	}
 
+	const [isEditing, setIsEditing] = useState(false)
+
+	const handleClick = () => {
+		setIsEditing(!isEditing)
+
+	}
+
+	const editButton = <button onClick={handleClick} class="ml-2 text-xl bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded">
+		Edit
+	</button>
+
+	const cancelButton = <button onClick={handleClick} class="ml-2 text-xl bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded">
+		Cancel
+	</button>
+
+	const saveButton = <button onClick={handleClick} class="ml-2 text-xl bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded">
+		Save
+	</button>
+
 	return (
 		<div className="flex flex-col items-center">
 			<h1 className="text-4xl font-bold m-5">Marks</h1>
@@ -40,14 +60,11 @@ export default function Marks() {
 							<option value="11A">11A</option>
 						</select>
 					</span>
-					<button class="ml-auto text-xl bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded">
-						Cancel
-					</button>
-					<button class="ml-2 text-xl bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded">
-						Save
-					</button>
+					<div className="ml-auto">
+						{isEditing ? ([cancelButton, saveButton]) : editButton}
+					</div>
 				</div>
-				<Table data={data} />
+				<Table data={data} isEditing={isEditing} />
 			</div>
 		</div>
 	);
