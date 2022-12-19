@@ -16,11 +16,13 @@ export default function Marks() {
 			"final test"
 		],
 		rows: [
-			[1, "Nguyen Van A", 10, 10, 10],
-			[2, "Nguyen Van B", 10, 10, 10],
-			[3, "Nguyen Van C", 10, 10, 10],
-			[4, "Nguyen Van D", 10, 10, 10],
-			[5, "Nguyen Van E", 10, 10, 10]
+			{ name: "Nguyen Van A", results: [10, 10, 10] },
+			{ name: "Nguyen Van B", results: [10, 10, 10] },
+			{ name: "Nguyen Van C", results: [10, 10, 10] },
+			{ name: "Nguyen Van D", results: [10, 10, 10] },
+			{ name: "Nguyen Van E", results: [10, 10, 10] },
+			{ name: "Nguyen Van F", results: [10, 10, 10] },
+			{ name: "Nguyen Van G", results: [10, 10, 10] },
 		]
 	}
 
@@ -31,7 +33,7 @@ export default function Marks() {
 				<div className='flex w-full items-center m-3'>
 					<span className="text-xl font-bold mr-10">Subject: Math</span>
 					<span className="text-xl font-bold">Class:
-						<select className="ml-2 text-xl font-bold">
+						<select className="border border-violet-300 rounded-md shadow-sm focus:border-violet-300 focus:ring focus:ring-violet-200 focus:ring-opacity-50 ml-2 text-xl font-bold">
 							<option value="10A">10A</option>
 							<option value="10B">10B</option>
 							<option value="10C">10C</option>
