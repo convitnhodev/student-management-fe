@@ -1,6 +1,8 @@
 import React from 'react';
 import Table from '../components/Table';
 import Button from '../components/Button';
+import { useEffect } from 'react';
+import AddStudent from './AddStudent';
 
 /**
  * This page shows the marks of all students with a specific subject.
@@ -11,6 +13,8 @@ export default function MakeClass() {
   const [name, setName] = React.useState('');
   const [numOfStudents, setNumOfStudents] = React.useState(0);
   const [students, setStudents] = React.useState([]);
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [isAdding, setIsAdding] = React.useState(false);
 
   const data = {
     column_names: ['No.', 'Name', 'Date', 'Gender', 'Address', 'Email'],
@@ -32,6 +36,35 @@ export default function MakeClass() {
         results: ['1/1/2000', 'Male', 'VN', 'abc@email.com'],
       },
     ],
+  };
+
+  useEffect(() => {
+    setStudents(data.rows);
+  }, []);
+
+  const handleAddStudent = () => {
+    const modal = document.getElementById('modal');
+    if (modal.classList.contains('hidden') && isAdding) {
+      setIsAdding(false);
+      return;
+    }
+    setIsAdding(true);
+  };
+
+  const handleCancelAddStudent = () => {
+    setIsAdding(false);
+  };
+
+  const handleAddStudentSubmit = (student) => {
+    console.log(student);
+    const result = [
+      student.date,
+      student.gender,
+      student.address,
+      student.email,
+    ];
+    setStudents([...students, { name: student.name, results: result }]);
+    setIsAdding(false);
   };
 
   return (
@@ -65,9 +98,12 @@ export default function MakeClass() {
           />
         </div>
       </div>
-      <Table data={data} />
+      <Table
+        data={{ column_names: data.column_names, rows: students }}
+        isEditing={isEditing}
+      />
 
-      <button className="mt-10">
+      <button className="mt-10" onClick={handleAddStudent}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -91,6 +127,11 @@ export default function MakeClass() {
         />
         <Button nameBtn={'Done'} />
       </div>
+      <AddStudent
+        isOpen={isAdding}
+        onAddStudent={handleAddStudentSubmit}
+        cancelOpen={handleCancelAddStudent}
+      />
     </div>
   );
 }

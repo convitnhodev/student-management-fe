@@ -71,11 +71,12 @@ export default function Table({ data, isEditing }) {
                     <td
                       scope="row"
                       className="py-4 px-6 font-medium text-violet-900 whitespace-nowrap"
+                      key={`result-${result}`}
                     >
                       <input
                         disabled={!isEditing}
                         type="text"
-                        className="w-10 border border-violet-300 rounded-md shadow-sm focus:border-violet-300 focus:ring focus:ring-violet-200 focus:ring-opacity-50"
+                        className="border border-violet-300 rounded-md shadow-sm focus:border-violet-300 focus:ring focus:ring-violet-200 focus:ring-opacity-50"
                         value={result}
                       />
                     </td>
