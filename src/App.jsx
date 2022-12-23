@@ -1,14 +1,14 @@
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
-import Student from './pages/Student';
 import Marks from './pages/Marks';
 import Report from './pages/Report';
 import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
 import Class from './pages/Class';
+import SearchStudent from './pages/SearchStudent';
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/dashboard/*" element={<Dashboard />}>
           <Route index element={<Home />} />
-          <Route path="student/:id" element={<Student />} />
+          <Route path="student" element={<SearchStudent />} />
           <Route path="marks/:id" element={<Marks />} />
           <Route path="report" element={<Report />} />
           <Route path="profile" element={<Profile />} />
