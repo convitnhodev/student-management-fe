@@ -3,18 +3,28 @@ import Table from '../components/Table';
 import Button from '../components/Button';
 import { useEffect } from 'react';
 import AddStudent from './AddStudent';
+import { Link, useParams } from 'react-router-dom';
 
 /**
  * This page shows the marks of all students with a specific subject.
  * It also allows the user to update the marks of a student
  * @returns JSX.Element as a page
  */
-export default function MakeClass() {
+export default function Class() {
+  const { id } = useParams();
+  console.log(id);
   const [name, setName] = React.useState('');
   const [numOfStudents, setNumOfStudents] = React.useState(0);
   const [students, setStudents] = React.useState([]);
-  const [isEditing, setIsEditing] = React.useState(false);
   const [isAdding, setIsAdding] = React.useState(false);
+
+  useEffect(() => {
+    if (id !== undefined) {
+      setName('10A1');
+      setNumOfStudents(30);
+      setStudents(data.rows);
+    }
+  }, []);
 
   const data = {
     column_names: ['No.', 'Name', 'Date', 'Gender', 'Address', 'Email'],
@@ -38,9 +48,9 @@ export default function MakeClass() {
     ],
   };
 
-  useEffect(() => {
-    setStudents(data.rows);
-  }, []);
+  // useEffect(() => {
+  //   setStudents(data.rows);
+  // }, []);
 
   const handleAddStudent = () => {
     const modal = document.getElementById('modal');
@@ -56,7 +66,6 @@ export default function MakeClass() {
   };
 
   const handleAddStudentSubmit = (student) => {
-    console.log(student);
     const result = [
       student.date,
       student.gender,
@@ -67,9 +76,19 @@ export default function MakeClass() {
     setIsAdding(false);
   };
 
+  const onCancel = () => {
+    window.history.back();
+  };
+
+  const onDone = () => {
+    window.history.back();
+  };
+
   return (
     <div className="flex flex-col items-center justify-center max-w-7xl min-h-screen py-2">
-      <h1 className="text-5xl font-bold my-10">Make a Class</h1>
+      <h1 className="text-5xl font-bold my-10">
+        {id ? `Class List ${name}` : `Make a Class`}
+      </h1>
       <div className="flex flex-nowrap mb-10">
         <div className="mr-10">
           <label htmlFor="name" className="text-base font-bold mr-5">
@@ -98,10 +117,7 @@ export default function MakeClass() {
           />
         </div>
       </div>
-      <Table
-        data={{ column_names: data.column_names, rows: students }}
-        isEditing={isEditing}
-      />
+      <Table data={{ column_names: data.column_names, rows: students }} />
 
       <button className="mt-10" onClick={handleAddStudent}>
         <svg
@@ -124,8 +140,9 @@ export default function MakeClass() {
         <Button
           nameBtn={'Cancel'}
           className={'mr-10 bg-neutral-400 hover:bg-gray-700'}
+          onClickButton={onCancel}
         />
-        <Button nameBtn={'Done'} />
+        <Button nameBtn={'Done'} onClickButton={onDone} />
       </div>
       <AddStudent
         isOpen={isAdding}

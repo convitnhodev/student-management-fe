@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 function CardClass({ id, name, numOfStudents }) {
   return (
     <Link
-      to={`/class/${id}`}
+      to={`/dashboard/class/${id}`}
       className="group flex flex-col justify-between rounded-sm bg-white p-8 shadow-xl transition-shadow hover:shadow-lg"
     >
       <div>

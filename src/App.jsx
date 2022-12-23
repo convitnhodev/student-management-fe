@@ -8,7 +8,7 @@ import Marks from './pages/Marks';
 import Report from './pages/Report';
 import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
-import MakeClass from './pages/MakeClass';
+import Class from './pages/Class';
 
 function App() {
   return (
@@ -23,7 +23,8 @@ function App() {
           <Route path="marks/:id" element={<Marks />} />
           <Route path="report" element={<Report />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="class/add" element={<MakeClass />} />
+          <Route path="class/add" element={<Class />} />
+          <Route path="class/:id" element={<Class />} />
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="*" element={<NotFound />} />
