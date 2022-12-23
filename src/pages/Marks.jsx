@@ -51,13 +51,19 @@ export default function Marks() {
 			<h1 className="text-4xl font-bold m-5">Marks</h1>
 			<div className="flex flex-col items-center">
 				<div className='flex w-full items-center m-3'>
-					<span className="text-xl font-bold mr-10">Subject: Math</span>
-					<span className="text-xl font-bold">Class:
+					<span className="text-xl font-bold">Subject: Math</span>
+					<span className="text-xl font-bold mx-4">Class:
 						<select className="border border-violet-300 rounded-md shadow-sm focus:border-violet-300 focus:ring focus:ring-violet-200 focus:ring-opacity-50 ml-2 text-xl font-bold">
 							<option value="10A">10A</option>
 							<option value="10B">10B</option>
 							<option value="10C">10C</option>
 							<option value="11A">11A</option>
+						</select>
+					</span>
+					<span className="text-xl font-bold">Term:
+						<select className="border border-violet-300 rounded-md shadow-sm focus:border-violet-300 focus:ring focus:ring-violet-200 focus:ring-opacity-50 ml-2 text-xl font-bold">
+							<option value="10A">1</option>
+							<option value="10B">2</option>
 						</select>
 					</span>
 					<div className="ml-auto">
