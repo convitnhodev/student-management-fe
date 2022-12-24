@@ -9,6 +9,7 @@ import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
 import Class from './pages/Class';
 import SearchStudent from './pages/SearchStudent';
+import Student from './pages/Student';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/dashboard/*" element={<Dashboard />}>
           <Route index element={<Home />} />
           <Route path="student" element={<SearchStudent />} />
+          <Route path="student/:id" element={<Student />} />
           <Route path="marks/:id" element={<Marks />} />
           <Route path="report" element={<Report />} />
           <Route path="profile" element={<Profile />} />

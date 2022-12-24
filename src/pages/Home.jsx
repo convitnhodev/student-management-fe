@@ -70,7 +70,7 @@ export default function Home() {
             />
           ))}
           {/* one col add class */}
-          <div className="group flex flex-col justify-between rounded-sm bg-white p-8 shadow-xl transition-shadow hover:shadow-lg">
+          {/* <div className="group flex flex-col justify-between rounded-sm bg-white p-8 shadow-xl transition-shadow hover:shadow-lg">
             <Link
               to={'class/add'}
               className="group flex flex-col justify-between rounded-sm bg-slate-100 border-dashed border-2 border-sky-500 p-8"
@@ -84,7 +84,7 @@ export default function Home() {
                 </p>
               </div>
             </Link>
-          </div>
+          </div> */}
         </div>
 
         <h1 className="text-5xl font-bold my-10">Teaching Class</h1>
@@ -97,7 +97,7 @@ export default function Home() {
               numOfStudents={item.numOfStudents}
             />
           ))}
-          <div className="group flex flex-col justify-between rounded-sm bg-white p-8 shadow-xl transition-shadow hover:shadow-lg">
+          {/* <div className="group flex flex-col justify-between rounded-sm bg-white p-8 shadow-xl transition-shadow hover:shadow-lg">
             <Link
               to={'class/add'}
               className="group flex flex-col justify-between rounded-sm bg-slate-100 border-dashed border-2 border-sky-500 p-8"
@@ -111,7 +111,7 @@ export default function Home() {
                 </p>
               </div>
             </Link>
-          </div>
+          </div> */}
         </div>
       </main>
     </div>
