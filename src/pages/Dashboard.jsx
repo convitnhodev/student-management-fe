@@ -8,9 +8,9 @@ import Sidebar from '../components/Sidebar';
  */
 export default function Dashboard() {
 	return (
-		<div className="flex">
+		<div className="flex bg-violet-100 h-screen">
 			<Sidebar />
-			<div className="ml-[250px] w-full h-screen bg-violet-100">
+			<div className="ml-[250px] w-full">
 				<Outlet />
 			</div>
 		</div>
