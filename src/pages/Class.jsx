@@ -11,21 +11,6 @@ import { Link, useParams } from 'react-router-dom';
  * @returns JSX.Element as a page
  */
 export default function Class() {
-  const { id } = useParams();
-  console.log(id);
-  const [name, setName] = React.useState('');
-  const [numOfStudents, setNumOfStudents] = React.useState(0);
-  const [students, setStudents] = React.useState([]);
-  const [isAdding, setIsAdding] = React.useState(false);
-
-  useEffect(() => {
-    if (id !== undefined) {
-      setName('10A1');
-      setNumOfStudents(30);
-      setStudents(data.rows);
-    }
-  }, []);
-
   const data = {
     column_names: ['No.', 'Name', 'Date', 'Gender', 'Address', 'Email'],
     rows: [
@@ -47,9 +32,18 @@ export default function Class() {
       },
     ],
   };
+  const { id } = useParams();
+  const [className, setClassName] = React.useState('10A1');
+  const [numOfStudents, setNumOfStudents] = React.useState(30);
+  const [students, setStudents] = React.useState(data.rows);
+  const [isAdding, setIsAdding] = React.useState(false);
 
   // useEffect(() => {
-  //   setStudents(data.rows);
+  //   if (id !== undefined) {
+  //     setClassName('10A1');
+  //     setNumOfStudents(30);
+  //     setStudents(data.rows);
+  //   }
   // }, []);
 
   const handleAddStudent = () => {
@@ -74,6 +68,7 @@ export default function Class() {
     ];
     setStudents([...students, { name: student.name, results: result }]);
     setIsAdding(false);
+    setNumOfStudents(numOfStudents + 1);
   };
 
   const onCancel = () => {
@@ -87,20 +82,21 @@ export default function Class() {
   return (
     <div className="flex flex-col items-center justify-center max-w-7xl min-h-screen py-2">
       <h1 className="text-5xl font-bold my-10">
-        {id ? `Class List ${name}` : `Make a Class`}
+        {id ? `Class List ${className}` : `Make a Class`}
       </h1>
       <div className="flex flex-nowrap mb-10">
         <div className="mr-10">
-          <label htmlFor="name" className="text-base font-bold mr-5">
+          <label htmlFor="className" className="text-base font-bold mr-5">
             Name
           </label>
           <input
+            disabled={id ? true : false}
             type="text"
-            id="name"
-            name="name"
+            id="className"
+            name="className"
             className="border-1 border-black rounded-md p-1"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={className}
+            onChange={(e) => setClassName(e.target.value)}
           />
         </div>
         <div>
@@ -108,6 +104,7 @@ export default function Class() {
             Number of Students
           </label>
           <input
+            disabled={id ? true : false}
             type="number"
             id="numOfStudents"
             name="numOfStudents"
@@ -142,7 +139,11 @@ export default function Class() {
           className={'mr-10 bg-neutral-400 hover:bg-gray-700'}
           onClickButton={onCancel}
         />
-        <Button nameBtn={'Done'} onClickButton={onDone} />
+        <Button
+          nameBtn={'Done'}
+          onClickButton={onDone}
+          className={'done-btn'}
+        />
       </div>
       <AddStudent
         isOpen={isAdding}

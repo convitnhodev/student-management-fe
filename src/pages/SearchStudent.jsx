@@ -13,28 +13,24 @@ import Table from '../components/Table';
  * @returns JSX.Element as a page
  */
 export default function SearchStudent() {
-  console.log('SearchStudent');
   const navigate = useNavigate();
   const [id, setId] = React.useState('');
-  const data = {
+  const [data, setData] = React.useState({
     column_names: ['No.', 'Name', 'Date', 'Gender', 'Address', 'Email'],
-    rows: [
-      {
-        name: 'Nguyen Van A',
-        results: ['1/1/2000', 'Male', 'VN', 'abc@email.com'],
-      },
-    ],
+    rows: [],
+  });
+  const fakeAPI = {
+    name: 'Nguyen Van A',
+    results: ['1/1/2000', 'Male', 'VN', 'abc@email.com'],
   };
 
   const onClickStudent = () => {
-    // TODO: Redirect to Student page
-    console.log(`Redirect to student with id: ${id}`);
     navigate(`/dashboard/student/${id}`);
   };
 
   const onClickSearch = (e) => {
     e.preventDefault();
-    console.log(`Search student with id: ${id}`);
+    id ? setData({ ...data, rows: [fakeAPI] }) : setData({ ...data, rows: [] });
   };
 
   return (
