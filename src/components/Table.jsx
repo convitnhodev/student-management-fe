@@ -47,6 +47,7 @@ export default function Table({ data, isEditing }) {
         <thead className="text-xs text-violet-700 uppercase bg-violet-300">
           <tr>
             {/* <th scope="col" className="p-4">
+
 							<div className="flex items-center">
 								<input onChange={toogleAll} id="checkbox-all-search" type="checkbox" className="w-4 h-4 text-blue-600 bg-violet-100 rounded border-violet-300 focus:ring-blue-500  focus:ring-2" />
 								<label htmlFor="checkbox-all-search" className="sr-only">checkbox</label>
