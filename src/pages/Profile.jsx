@@ -20,33 +20,33 @@ import EditTeacherModal from "../components/profile/modals/EditTeacherModal";
  */
 
 export default function Profile() {
-    return (
-        <>
-            <div className="flex sm:flex-col xl:flex-row my-4 bg-white">
-                <div className="flex-1 h-fit flex flex-col">
-                    <LayoutFrame title="Hồ sơ cá nhân">
-                        <ProfileInformation />
-                    </LayoutFrame>
+	return (
+		<>
+			<div className="flex sm:flex-col xl:flex-row my-4 bg-white">
+				<div className="flex-1 h-fit flex flex-col">
+					<LayoutFrame title="Hồ sơ cá nhân">
+						<ProfileInformation />
+					</LayoutFrame>
 
-                    <LayoutFrame title="Lớp học">
-                        <ProfileClass />
-                    </LayoutFrame>
-                </div>
+					<LayoutFrame title="Lớp học">
+						<ProfileClass />
+					</LayoutFrame>
+				</div>
 
-                <LayoutFrame title="Quy định nhà trường">
-                    <Rules />
-                    <EditSubjectModal nameSubject={"asdf"} />
-                    <EditClassModal nameClass={"as"} size={5} />
-                    <EditTeacherModal />
-                </LayoutFrame>
-            </div>
+				<LayoutFrame title="Quy định nhà trường">
+					<Rules />
+					<EditSubjectModal nameSubject={"asdf"} />
+					<EditClassModal nameClass={"as"} size={5} />
+					<EditTeacherModal />
+				</LayoutFrame>
+			</div>
 
-            <LayoutFrame title="Quản lý giáo viên">
-                <Teachers />
-            </LayoutFrame>
+			<LayoutFrame title="Quản lý giáo viên">
+				<Teachers />
+			</LayoutFrame>
 
-            {/* Modal */}
-            <DeleteModal name={"a"} type="b" />
-        </>
-    );
+			{/* Modal */}
+			<DeleteModal name={"a"} type="b" />
+		</>
+	);
 }
