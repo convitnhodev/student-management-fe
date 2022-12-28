@@ -29,7 +29,7 @@ export default function SignIn() {
       body: JSON.stringify(values),
     });
     let data = await result.json();
-    localStorage.setItem("token", data.token);
+    if (data.token) localStorage.setItem("token", data.token);
   };
   useEffect(() => {
     if (localStorage.getItem("token")) {
