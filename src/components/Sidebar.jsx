@@ -1,6 +1,6 @@
-import React from 'react';
-import SidebarIcon from './SidebarIcon';
-import { Link } from 'react-router-dom';
+import React from "react";
+import SidebarIcon from "./SidebarIcon";
+import { Link } from "react-router-dom";
 import {
   FaSchool,
   FaHome,
@@ -9,13 +9,17 @@ import {
   FaClipboardList,
   FaUser,
   FaSignOutAlt,
-} from 'react-icons/fa';
+} from "react-icons/fa";
 
 /**
  * This is the sidebar component.
  * @returns JSX.Element as a component
  */
 export default function Sidebar() {
+  function handleLogout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+  }
   return (
     <div className="fixed top-0 left-0 h-screen w-[250px] flex flex-col bg-violet-900">
       <Link to={``}>
@@ -37,7 +41,7 @@ export default function Sidebar() {
       <Link to={`profile`} className="mt-auto">
         <SidebarIcon icon={<FaUser size="30" />} text="Profile" />
       </Link>
-      <Link to={`../signin`}>
+      <Link onClick={handleLogout} to={`../signin`}>
         <SidebarIcon icon={<FaSignOutAlt size="30" />} text="Sign Out" />
       </Link>
     </div>

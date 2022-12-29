@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { json, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 /**
  * This page allows the user to sign in.
@@ -7,11 +7,8 @@ import { json, Link } from "react-router-dom";
  */
 export default function SignIn() {
   const [values, setValues] = useState({
-    user_name: "",
-    password: "",
     remember: false,
   });
-
   const handleChange = (e) => {
     setValues({
       ...values,
@@ -19,8 +16,12 @@ export default function SignIn() {
         e.target.type === "checkbox" ? e.target.checked : e.target.value,
     });
   };
-
-  const handleSubmit = async (e) => {
+  useEffect(() => {
+    if (localStorage.getItem("token")) window.location.href = "/Dashboard";
+    // else setErr(localStorage.getItem("err"));
+  }, []);
+  const [err, setErr] = useState("");
+  const handleSubmit = async () => {
     let result = await fetch("http://localhost:8080/user/login", {
       method: "POST",
       headers: {
@@ -29,13 +30,15 @@ export default function SignIn() {
       body: JSON.stringify(values),
     });
     let data = await result.json();
-    if (data.token) localStorage.setItem("token", data.token);
-  };
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (data.data.token) {
+      values.remember ? localStorage.setItem("token", data.data.token) : "";
+      localStorage.setItem("user", values.user_name);
       window.location.href = "/Dashboard";
     }
-  }, []);
+    // else {
+    //   localStorage.setItem("err", "Sai tên đăng nhập hoặc mật khẩu");
+    // }
+  };
   return (
     <section className="h-screen bg-violet-100">
       <div className="container px-4 py-10 h-full">
@@ -64,7 +67,9 @@ export default function SignIn() {
                   onChange={handleChange}
                 />
               </div>
-
+              {/* <div className="mb-6">
+                <p className="text-red-500">{err}</p>
+              </div> */}
               <div className="flex justify-between items-center mb-6">
                 <div className="form-group form-check">
                   <input
