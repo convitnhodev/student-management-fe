@@ -9,6 +9,7 @@ export default function SignIn() {
   const [values, setValues] = useState({
     remember: false,
   });
+  console.log(values);
   const handleChange = (e) => {
     setValues({
       ...values,
@@ -18,10 +19,9 @@ export default function SignIn() {
   };
   useEffect(() => {
     if (localStorage.getItem("token")) window.location.href = "/Dashboard";
-    // else setErr(localStorage.getItem("err"));
   }, []);
   const [err, setErr] = useState("");
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
     let result = await fetch("http://localhost:8080/user/login", {
       method: "POST",
       headers: {
@@ -35,9 +35,6 @@ export default function SignIn() {
       localStorage.setItem("user", values.user_name);
       window.location.href = "/Dashboard";
     }
-    // else {
-    //   localStorage.setItem("err", "Sai tên đăng nhập hoặc mật khẩu");
-    // }
   };
   return (
     <section className="h-screen bg-violet-100">
@@ -63,13 +60,10 @@ export default function SignIn() {
                   type="password"
                   className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   placeholder="Mật khẩu"
-                  name="password"
+                  name="pass_word"
                   onChange={handleChange}
                 />
               </div>
-              {/* <div className="mb-6">
-                <p className="text-red-500">{err}</p>
-              </div> */}
               <div className="flex justify-between items-center mb-6">
                 <div className="form-group form-check">
                   <input
