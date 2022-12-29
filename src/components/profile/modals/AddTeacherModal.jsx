@@ -1,10 +1,10 @@
 import React from "react";
 import CancelIconModel from "../../icons/CancelIconModel";
 
-const EditTeacherModal = () => {
+const AddTeacherModal = () => {
     return (
         <div
-            id="edit-teacher-modal"
+            id="add-teacher-modal"
             tabindex="-1"
             class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full"
         >
@@ -13,14 +13,14 @@ const EditTeacherModal = () => {
                     <button
                         type="button"
                         class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                        data-modal-toggle="edit-teacher-modal"
+                        data-modal-toggle="add-teacher-modal"
                     >
                         <CancelIconModel />
                         <span class="sr-only">Close modal</span>
                     </button>
 
                     <div class="px-6 py-6 lg:px-8">
-                        <h2 class="text-purple-700 font-bold text-2xl mb-8 text-center">Thay đổi hồ sơ</h2>
+                        <h2 class="text-purple-700 font-bold text-2xl mb-8 text-center">Thêm hồ sơ</h2>
                         <form class="space-y-6" action="#">
                             <div class="grid grid-cols-4 gap-4 mb-8">
                                 <div class="col-span-4 place-items-center">
@@ -52,7 +52,6 @@ const EditTeacherModal = () => {
                                                     id="male"
                                                     type="radio"
                                                     value="male"
-                                                    name="sex"
                                                     class="outline-none w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 "
                                                 />
                                                 <label for="male" class="ml-2 text-sm font-medium text-gray-900 ">
@@ -64,7 +63,6 @@ const EditTeacherModal = () => {
                                                     id="female"
                                                     type="radio"
                                                     value="femail"
-                                                    name="sex"
                                                     class="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 "
                                                 />
                                                 <label for="female" class="ml-2 text-sm font-medium text-gray-900 ">
@@ -126,7 +124,7 @@ const EditTeacherModal = () => {
                                     type="submit"
                                     class="w-1/4 mx-4 text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                                 >
-                                    Thay đổi
+                                    Thêm
                                 </button>
                                 <button
                                     type="reset"
@@ -143,4 +141,4 @@ const EditTeacherModal = () => {
     );
 };
 
-export default EditTeacherModal;
+export default AddTeacherModal;

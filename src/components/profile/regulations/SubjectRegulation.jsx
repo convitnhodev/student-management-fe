@@ -12,8 +12,14 @@ const SubjectRegulation = () => {
                             <th scope="col" className="py-3 px-6">
                                 Môn học
                             </th>
-                            <th scope="col" className="py-3 px-6">
-                                <span className="sr-only">Chỉnh sửa</span>
+                            <th scope="col" className="py-3 px-6 text-center">
+                                <button
+                                    type="button"
+                                    data-modal-toggle="add-subject-modal"
+                                    className="uppercase text-green-600 hover:underline"
+                                >
+                                    Thêm môn học
+                                </button>
                             </th>
                         </tr>
                     </thead>
@@ -22,7 +28,7 @@ const SubjectRegulation = () => {
                             <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
                                 Hóa lý 2
                             </th>
-                            <td className="py-4 px-6 text-right">
+                            <td className="py-4 px-6  text-center">
                                 <button
                                     type="button"
                                     data-modal-toggle="edit-subject-modal"
@@ -112,7 +118,6 @@ const SubjectRegulation = () => {
                     Xóa hết
                 </button>
             </div>
-
         </div>
     );
 };

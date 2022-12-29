@@ -1,6 +1,4 @@
 import React from "react";
-import EditTeacherModal from "./modals/EditTeacherModal";
-import DeleteModal from "./modals/DeleteModal";
 
 const Teachers = () => {
     return (
@@ -9,67 +7,56 @@ const Teachers = () => {
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" className="py-3 px-6">
-                                #
-                            </th>
-                            <th scope="col" className="py-3 px-6">
-                                Họ tên
-                            </th>
-                            <th scope="col" className="py-3 px-6">
-                                Ngày sinh
-                            </th>
-                            <th scope="col" className="py-3 px-6">
-                                Giới tính
-                            </th>
-                            <th scope="col" className="py-3 px-6">
-                                Địa chỉ
-                            </th>
-                            <th scope="col" className="py-3 px-6">
-                                Email
-                            </th>
-                            <th scope="col" className="py-3 px-6">
-                                Chức vụ
-                            </th>
-                            <th scope="col" className="py-3 px-6">
-                                Lớp chủ nhiệm
-                            </th>
-                            <th scope="col" className="py-3 px-6">
-                                <span className="sr-only">Chỉnh sửa</span>
-                            </th>
-                            <th scope="col" className="py-3 px-6">
-                                <span className="sr-only">Xóa</span>
+                            <th className="w-4 py-3 px-6 text-center">#</th>
+                            <th className="w-40 py-3 px-3">Họ tên</th>
+                            <th className="w-32 py-3 px-3">Ngày sinh</th>
+                            <th className="w-28 py-3 px-3 text-center">Giới tính</th>
+                            <th className="w-40 py-3 px-3">Địa chỉ</th>
+                            <th className="w-40 py-3 px-3">Email</th>
+                            <th className="w-4 py-3 px-3">Chức vụ</th>
+                            <th className="w-36 py-3 px-3">Lớp chủ nhiệm</th>
+                            <th className="w-20 py-3 px-3  text-center">
+                                <button
+                                    type="button"
+                                    data-modal-toggle="add-teacher-modal"
+                                    className="uppercase text-green-600 hover:underline"
+                                >
+                                    Thêm giáo viên
+                                </button>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <th className="py-4 px-6">1</th>
+                            <th className="w-4 py-3 px-6 text-center">1</th>
                             <th
                                 scope="row"
-                                className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                                className="w-40 py-3 px-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
                                 Nguyễn Văn A
                             </th>
-                            <td className="py-4 px-6">22-12-2002</td>
-                            <td className="py-4 px-6">Nam</td>
-                            <td className="py-4 px-6 ">
-                                <p className="w-28 overflow-hidden whitespace-nowrap text-ellipsis">
+                            <td className="w-32 py-3 px-3">22-12-2002</td>
+                            <td className="w-28 py-3 px-3 text-center">Nam</td>
+                            <td className="w-40 py-3 px-3">
+                                <p className="w-40 overflow-hidden whitespace-nowrap text-ellipsis">
                                     227 NVC, Q5, HCM asdf asdf asdf ádf
                                 </p>
                             </td>
-                            <td className="py-4 px-6">haonguyencp22@gmail.com</td>
-                            <td className="py-4 px-6">Hiệu trưởng</td>
-                            <td className="py-4 px-6"></td>
-                            <td className="py-4 px-6 text-right">
+                            <td className="w-40 py-3 px-3">
+                                <p className="w-40 overflow-hidden whitespace-nowrap text-ellipsis">
+                                    227 NVC, Q5, HCM asdf asdf asdf ádf
+                                </p>
+                            </td>
+                            <td className="w-40 py-3 px-3">Hiệu trưởng</td>
+                            <td className="w-36 py-3 px-3"></td>
+                            <td className="w-36 py-3 px-3 text-center flex flex-row">
                                 <button
                                     type="button"
                                     data-modal-toggle="edit-teacher-modal"
-                                    className="font-medium text-blue-600 hover:underline"
+                                    className="font-medium text-blue-600 hover:underline pr-6"
                                 >
                                     Chỉnh sửa
                                 </button>
-                            </td>
-                            <td className="py-4 pr-6 text-right">
                                 <button
                                     type="button"
                                     data-modal-toggle="delete-modal"
@@ -81,7 +68,6 @@ const Teachers = () => {
                         </tr>
                     </tbody>
                 </table>
-
             </div>
 
             <nav aria-label="Page navigation example">

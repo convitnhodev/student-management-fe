@@ -9,24 +9,41 @@ const ClassRegulation = () => {
                 <table className="w-full text-sm text-left text-gray-500">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
                         <tr>
-                            <th scope="col" className="py-3 px-6">
-                                Tên lớp học
+                            <th scope="col" className="py-3 px-3 text-center">
+                                Lớp học
                             </th>
-                            <th scope="col" className="py-3 px-6">
+                            <th scope="col" className="py-3 px-3 text-center">
                                 Sĩ số
                             </th>
-                            <th scope="col" className="py-3 px-6">
-                                <span className="sr-only">Chỉnh sửa</span>
+                            <th scope="col" className="py-3 px-3 text-center">
+                                Sĩ số Nam
+                            </th>
+                            <th scope="col" className="py-3 px-3 text-center">
+                                GVCN
+                            </th>
+                            <th scope="col" className="py-3 px-3 text-center">
+                                <button
+                                    type="button"
+                                    data-modal-toggle="add-class-modal"
+                                    className="uppercase text-green-600 hover:underline"
+                                >
+                                    Thêm lớp
+                                </button>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr className="bg-white border-b hover:bg-gray-50 ">
-                            <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap ">
+                            <th
+                                scope="row"
+                                className="py-4 px-3 font-medium text-gray-900 whitespace-nowrap text-center "
+                            >
                                 12A1
                             </th>
-                            <td className="py-4 px-6">32</td>
-                            <td className="py-4 px-6 text-right">
+                            <td className="py-4 px-3 text-center">32</td>
+                            <td className="py-4 px-3 text-center">32</td>
+                            <td className="py-4 px-3 text-center">NVA</td>
+                            <td className="py-4 px-3 text-center">
                                 <button
                                     type="button"
                                     data-modal-toggle="edit-class-modal"
@@ -116,7 +133,6 @@ const ClassRegulation = () => {
                     Xóa hết
                 </button>
             </div>
-            
         </div>
     );
 };
