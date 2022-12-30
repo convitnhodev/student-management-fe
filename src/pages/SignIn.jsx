@@ -22,6 +22,7 @@ export default function SignIn() {
   }, []);
   const [err, setErr] = useState("");
   const handleSubmit = async (e) => {
+    e.preventDefault();
     let result = await fetch("http://localhost:8080/user/login", {
       method: "POST",
       headers: {
@@ -30,9 +31,11 @@ export default function SignIn() {
       body: JSON.stringify(values),
     });
     let data = await result.json();
-    if (data.data.token) {
-      values.remember ? localStorage.setItem("token", data.data.token) : "";
+    if (data.data.account.token) {
+      console.log(data.data.role);
+      localStorage.setItem("token", data.data.account.token);
       localStorage.setItem("user", values.user_name);
+      localStorage.setItem("role", data.data.role);
       window.location.href = "/Dashboard";
     }
   };
