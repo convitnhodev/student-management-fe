@@ -31,13 +31,14 @@ export default function SignIn() {
       body: JSON.stringify(values),
     });
     let data = await result.json();
-    if (data.data.account.token) {
+    if (data.data) {
       console.log(data.data.role);
       localStorage.setItem("token", data.data.account.token);
       localStorage.setItem("user", values.user_name);
       localStorage.setItem("role", data.data.role);
       window.location.href = "/Dashboard";
     }
+    window.location.href = "/SignIn";
   };
   return (
     <section className="h-screen bg-violet-100">
