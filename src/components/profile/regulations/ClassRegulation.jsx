@@ -46,7 +46,7 @@ const ClassRegulation = (props) => {
         let item = { ...setArray[index], isEdit: !setArray[index].isEdit };
         setArray[index] = item;
         setAllClass(setArray);
-
+        
         // call API
         // const requestOptions = {
         //     method: "POST",
@@ -66,7 +66,7 @@ const ClassRegulation = (props) => {
 
     const changeGrade = (e, i) => {
         let setArray = [...nClass];
-        let item = { ...setArray[i], grade: e.target.value };
+        let item = { ...setArray[i], grade: parseInt(e.target.value) };
         setArray[i] = item;
         setNClass(setArray);
     };

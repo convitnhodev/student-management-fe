@@ -3,9 +3,6 @@ import React, { useEffect, useState } from "react";
 import "flowbite";
 
 import DeleteModal from "../components/profile/modals/DeleteModal";
-import EditClassModal from "../components/profile/modals/EditClassModal";
-import EditSubjectModal from "../components/profile/modals/EditSubjectModal";
-import EditTeacherModal from "../components/profile/modals/EditTeacherModal";
 import AddClassModal from "../components/profile/modals/AddClassModal";
 import AddSubjectModal from "../components/profile/modals/AddSubjectModal";
 import AddTeacherModal from "../components/profile/modals/AddTeacherModal";
@@ -35,13 +32,11 @@ export default function Profile() {
 
     const [classesObj, setClassesObj] = useState({});
     const [pageClass, setPageClass] = useState(1);
-    const [Class, setClass] = useState();
 
     const [subjectObj, setSubjectObj] = useState({});
     const [pageSubject, setPageSubject] = useState(1);
-    const [Subject, setSubject] = useState();
 
-    async function getClasses(page = 1, limit = 5) {    
+    async function getClasses(page = 1, limit = 5) {
         try {
             let data = await fetch(`http://localhost:8080/class/list?limit=${limit}&page=${page}`);
             let json = await data.json();
@@ -53,7 +48,7 @@ export default function Profile() {
 
     async function getSubjects(page = 1, limit = 5) {
         try {
-            let data = await fetch(`http://localhost:8080/course/list?limit=${limit}&page=${page}`);
+            let data = await fetch(`http://localhost:8080/course/course?limit=${limit}&page=${page}`);
             let json = await data.json();
             setSubjectObj(json);
         } catch (error) {
@@ -62,13 +57,12 @@ export default function Profile() {
     }
 
     useEffect(() => {
-            getClasses(pageClass);
-        
+        getClasses(pageClass);
     }, [pageClass, flat]);
 
-    // useEffect(() => {
-    //     getSubjects(pageSubject);
-    // }, [pageSubject]);
+    useEffect(() => {
+        getSubjects(pageSubject);
+    }, [pageSubject, flat]);
 
     return (
         <>
@@ -157,7 +151,13 @@ export default function Profile() {
                                             class="hidden"
                                             aria-labelledby="accordion-collapse-heading-3"
                                         >
-                                            <SubjectRegulation subjectsObj={subjectObj} setPage={setPageSubject} />
+                                            <SubjectRegulation
+                                                subjectsObj={subjectObj}
+                                                page={pageSubject}
+                                                setPage={setPageSubject}
+                                                flat={flat}
+                                                setFlat={setFlat}
+                                            />
                                         </div>
 
                                         {/* Regulation 5: Change passing standard score */}
@@ -183,11 +183,8 @@ export default function Profile() {
                                     </div>
                                 </div>
 
-                                <EditSubjectModal nameSubject={"asdf"} />
-                                <EditClassModal nameClass={"as"} size={5} />
-                                <EditTeacherModal />
                                 <AddClassModal flat={flat} setFlat={setFlat} />
-                                <AddSubjectModal />
+                                <AddSubjectModal flat={flat} setFlat={setFlat} />
                             </LayoutFrame>
                         </div>
                         <LayoutFrame title="Quản lý giáo viên">

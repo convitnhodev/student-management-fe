@@ -1,6 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 
-const AddSubjectModal = ({ nameSubject }) => {
+const AddSubjectModal = (props) => {
+    const [data, setData] = useState({
+        subject_title: "",
+    });
+
+    const [status, setStatus] = useState(0);
+
+    const changeSubject = (e) => {
+        setData({
+            ...data,
+            subject_title: e.target.value,
+        });
+    };
+
+    const AddSubject = async () => {
+        try {
+            let newData = {
+                ...data,
+                course_id: data.subject_title,
+            };
+            console.log(JSON.stringify(newData));
+            const requestOptions = {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newData),
+            };
+            await fetch("http://localhost:8080/course/new", requestOptions);
+            props.setFlat(!props.flat);
+            setStatus(1);
+        } catch (error) {
+            setStatus(-1);
+        } finally {
+            setTimeout(() => {
+                setStatus(0);
+            }, 2000);
+        }
+    };
     return (
         <div
             id="add-subject-modal"
@@ -41,24 +77,31 @@ const AddSubjectModal = ({ nameSubject }) => {
                                             type={"text"}
                                             className="grow placeholder:italic placeholder:text-slate-400 block bg-purple-50 border-purple-800 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none sm:text-sm outline-none border"
                                             placeholder="xsy"
+                                            onChange={changeSubject}
                                         />
                                     </div>
                                 </div>
                             </div>
                             <div className="flex flex-row items-center justify-center">
                                 <button
-                                    type="submit"
+                                    onClick={AddSubject}
+                                    type="button"
                                     className="w-1/4 mx-4 text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                                 >
                                     Thêm
                                 </button>
                                 <button
-                                    type="reset"
+                                    data-modal-toggle="add-subject-modal"
+                                    type="button"
                                     className="w-1/4 mx-4 text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                                 >
-                                    Xóa hết
+                                    Hủy
                                 </button>
                             </div>
+                            {status === 1 && (
+                                <p className="text-green-700 text-center text-lg"> Tạo môn học thành công</p>
+                            )}
+                            {status === -1 && <p className="text-red-700 text-center text-lg"> Tạo môn học thất bại</p>}
                         </form>
                     </div>
                 </div>
