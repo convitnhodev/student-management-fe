@@ -5,7 +5,6 @@ import "flowbite";
 import DeleteModal from "../components/profile/modals/DeleteModal";
 import AddClassModal from "../components/profile/modals/AddClassModal";
 import AddSubjectModal from "../components/profile/modals/AddSubjectModal";
-import AddTeacherModal from "../components/profile/modals/AddTeacherModal";
 
 import Arrow from "../components/icons/arrow";
 import AgeRegulation from "../components/profile/regulations/AgeRegulation";
@@ -36,6 +35,9 @@ export default function Profile() {
     const [subjectObj, setSubjectObj] = useState({});
     const [pageSubject, setPageSubject] = useState(1);
 
+    const [teacherObj, setTeacherObj] = useState({});
+    const [pageTeacher, setPageTeacher] = useState(1);
+
     async function getClasses(page = 1, limit = 5) {
         try {
             let data = await fetch(`http://localhost:8080/class/list?limit=${limit}&page=${page}`);
@@ -56,6 +58,16 @@ export default function Profile() {
         }
     }
 
+    async function getTeachers(page = 1, limit = 5) {
+        try {
+            let data = await fetch(`http://localhost:8080/user/list?limit=${limit}&page=${page}`);
+            let json = await data.json();
+            setTeacherObj(json);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
         getClasses(pageClass);
     }, [pageClass, flat]);
@@ -63,6 +75,10 @@ export default function Profile() {
     useEffect(() => {
         getSubjects(pageSubject);
     }, [pageSubject, flat]);
+
+    useEffect(() => {
+        getTeachers(pageTeacher);
+    }, [pageTeacher, flat]);
 
     return (
         <>
@@ -188,8 +204,13 @@ export default function Profile() {
                             </LayoutFrame>
                         </div>
                         <LayoutFrame title="Quản lý giáo viên">
-                            <Teachers />
-                            <AddTeacherModal />
+                            <Teachers
+                                teachersObj={teacherObj}
+                                page={pageTeacher}
+                                setPage={setPageTeacher}
+                                flat={flat}
+                                setFlat={setFlat}
+                            />
                         </LayoutFrame>
                     </div>
                 ) : (
@@ -209,9 +230,6 @@ export default function Profile() {
                         </div>,
                     )
                 )}
-
-                {/* Modal */}
-                <DeleteModal name={"a"} type="b" />
             </div>
         </>
     );

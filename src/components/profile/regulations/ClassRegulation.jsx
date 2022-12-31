@@ -46,7 +46,7 @@ const ClassRegulation = (props) => {
         let item = { ...setArray[index], isEdit: !setArray[index].isEdit };
         setArray[index] = item;
         setAllClass(setArray);
-        
+
         // call API
         // const requestOptions = {
         //     method: "POST",
@@ -169,12 +169,12 @@ const ClassRegulation = (props) => {
                                             c.homeroom_teacher
                                         )}
                                     </td>
-                                    <td className="w-1/4 py-4 px-3 text-center">
+                                    <td className="w-1/3 py-4 px-3 text-center ">
                                         {c.isEdit ? (
                                             <button
                                                 type="button"
                                                 data-modal-toggle="edit-class-modal"
-                                                className="font-medium text-green-600 hover:underline pr-6"
+                                                className=" font-medium text-green-600 hover:underline pr-6"
                                                 onClick={() => handleSubmit(key)}
                                             >
                                                 Đồng ý
@@ -186,7 +186,7 @@ const ClassRegulation = (props) => {
                                                 className="font-medium text-blue-600 hover:underline pr-6"
                                                 onClick={() => handleEdit(key)}
                                             >
-                                                Chỉnh sửa
+                                                Sửa
                                             </button>
                                         )}
                                         <button

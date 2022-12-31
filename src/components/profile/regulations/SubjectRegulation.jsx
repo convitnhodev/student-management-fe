@@ -132,7 +132,7 @@ const SubjectRegulation = (props) => {
                                                 className="font-medium text-blue-600 hover:underline pr-6"
                                                 onClick={() => handleEdit(key)}
                                             >
-                                                Chỉnh sửa
+                                                Sửa
                                             </button>
                                         )}
                                         <button
