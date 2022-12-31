@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { FaRegCheckSquare, FaRegWindowClose } from "react-icons/fa";
 import axios from "axios";
-const pathPost = "http://localhost:8080/notification/acp/user?status=";
 
 /**
  * This page shows the marks of all students with a specific subject.
@@ -18,6 +17,7 @@ export default function Notify() {
         return res.data;
       })
       .catch((err) => {
+        console.log(err);
         window.location.href = "/NotFound";
       });
   };
@@ -35,7 +35,7 @@ export default function Notify() {
     }
     console.log(checked);
   }
-  function handleAccept(status) {
+  function handleAccept(status = 1) {
     checked.forEach((item) => {
       axios.post(
         `http://localhost:8080/notification/acp/user?status=${status}`,
@@ -113,7 +113,7 @@ export default function Notify() {
                       type="checkbox"
                       className="inline-block w-4 h-4"
                       name={index}
-                      onChange={handleCheck}
+                      onChange={handleChecks}
                     />
                   </td>
                 </tr>
@@ -125,17 +125,14 @@ export default function Notify() {
       <div>
         <button
           className="bg-violet-500 mt-3 rounded mr-2 hover:bg-violet-700 text-white shadow-md"
-          onClick={handleAccept.bind(this, 1)}
+          onClick={handleAccept}
         >
           <div className=" m-1 p-2.5 flex items-center px-4 duration-300 cursor-pointer ">
             {<FaRegCheckSquare size={30} />}
             <span className="sidebar-icon-text px-2">Accept</span>
           </div>
         </button>
-        <button
-          className="bg-violet-500 mt-3 rounded ml-2 hover:bg-violet-700 text-white shadow-md"
-          onClick={handleAccept.bind(this, 2)}
-        >
+        <button className="bg-violet-500 mt-3 rounded ml-2 hover:bg-violet-700 text-white shadow-md">
           <div className=" m-1 p-2.5 flex items-center px-4 duration-300 cursor-pointer ">
             {<FaRegWindowClose size={30} />}
             <span className="sidebar-icon-text px-2">Refuse</span>

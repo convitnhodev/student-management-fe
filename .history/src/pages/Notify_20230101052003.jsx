@@ -134,7 +134,7 @@ export default function Notify() {
         </button>
         <button
           className="bg-violet-500 mt-3 rounded ml-2 hover:bg-violet-700 text-white shadow-md"
-          onClick={handleAccept.bind(this, 2)}
+          onClick={handleAccept.bind(this, 1)}
         >
           <div className=" m-1 p-2.5 flex items-center px-4 duration-300 cursor-pointer ">
             {<FaRegWindowClose size={30} />}

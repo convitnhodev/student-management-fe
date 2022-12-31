@@ -37,13 +37,11 @@ export default function Notify() {
   }
   function handleAccept(status) {
     checked.forEach((item) => {
-      axios.post(
-        `http://localhost:8080/notification/acp/user?status=${status}`,
-        item
-      );
+      console.log(`${pathPost}${status}`);
+      // axios.post(`${pathPost}${status}`, item);
       console.log(JSON.stringify({ agent: item.agent }));
     });
-    window.location.reload();
+    // window.location.reload();
   }
   useEffect(() => {
     let temp = null;
@@ -125,17 +123,14 @@ export default function Notify() {
       <div>
         <button
           className="bg-violet-500 mt-3 rounded mr-2 hover:bg-violet-700 text-white shadow-md"
-          onClick={handleAccept.bind(this, 1)}
+          onClick={handleAccept}
         >
           <div className=" m-1 p-2.5 flex items-center px-4 duration-300 cursor-pointer ">
             {<FaRegCheckSquare size={30} />}
             <span className="sidebar-icon-text px-2">Accept</span>
           </div>
         </button>
-        <button
-          className="bg-violet-500 mt-3 rounded ml-2 hover:bg-violet-700 text-white shadow-md"
-          onClick={handleAccept.bind(this, 2)}
-        >
+        <button className="bg-violet-500 mt-3 rounded ml-2 hover:bg-violet-700 text-white shadow-md">
           <div className=" m-1 p-2.5 flex items-center px-4 duration-300 cursor-pointer ">
             {<FaRegWindowClose size={30} />}
             <span className="sidebar-icon-text px-2">Refuse</span>
