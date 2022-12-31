@@ -7,7 +7,8 @@ const SubjectRegulation = (props) => {
 
     useEffect(() => {
         if (props.subjectsObj.data == null) {
-            props.setPage(props.page - 1);
+            if (props.page - 1 > 0) props.setPage(props.page - 1);
+            else setAllSubject([])
         } else if (props.subjectsObj.data != undefined) {
             setPage(props.subjectsObj.paging);
             let subjectObj = props.subjectsObj.data;

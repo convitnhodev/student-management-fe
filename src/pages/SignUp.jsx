@@ -7,27 +7,27 @@ import { Link } from "react-router-dom";
  */
 export default function SignUp() {
 	return (
-		<section className="h-screen z-10">
+		<section className="h-screen z-10 bg-violet-100">
 			<div className="container px-4 py-10 h-full">
 				<div className="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
-					<div className="md:w-8/12 lg:w-4/12 lg:ml-20 border border-solid px-16 py-12 rounded bg-gray-100">
-						<h1 className=" mb-14  text-gray-800 font-bold text-4xl text-center">
-							SIGN UP
+					<div className="bg-violet-50 md:w-8/12 lg:w-4/12 lg:ml-20 border border-solid px-16 py-12 rounded">
+						<h1 className=" mb-14  text-violet-800 font-bold text-4xl text-center">
+							ĐĂNG KÝ
 						</h1>
 
-						<form action="/signup" method="post">
+						<form>
 							<div className="mb-3">
 								<input
 									type="text"
 									className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-									placeholder="Username"
+									placeholder="Tên người dùng"
 								/>
 							</div>
 							<div className="mb-3">
 								<input
 									type="text"
 									className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-									placeholder="Email address"
+									placeholder="Địa chỉ email"
 								/>
 							</div>
 
@@ -35,40 +35,22 @@ export default function SignUp() {
 								<input
 									type="password"
 									className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-									placeholder="Password"
+									placeholder="Mật khẩu"
 								/>
 							</div>
 							<div className="mb-3">
 								<input
 									type="password"
 									className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-									placeholder="Repeat Password"
+									placeholder="Nhập lại mật khẩu"
 								/>
-							</div>
-							<div className="flex justify-between items-center mb-4">
-								<div className="form-group form-check">
-									<input
-										type="checkbox"
-										className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-										id="check"
-									/>
-									<label
-										className="form-check-label inline-block text-gray-800"
-										for="check"
-									>
-										Remember me
-									</label>
-								</div>
 							</div>
 							<Link to="/dashboard">
 								<button
-									type="submit"
 									className="inline-block px-7 py-3 bg-green-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out w-full text-center
 									"
-									data-mdb-ripple="true"
-									data-mdb-ripple-color="light"
 								>
-									Sign up
+									Đăng ký
 								</button>
 							</Link>
 							<div className="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
@@ -81,7 +63,7 @@ export default function SignUp() {
 							data-mdb-ripple-color="light"
 							to="/signin"
 						>
-							sign in
+							Đăng nhập
 						</Link>
 					</div>
 				</div>

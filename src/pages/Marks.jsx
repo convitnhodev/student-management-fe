@@ -10,11 +10,11 @@ import Table from '../components/Table';
 export default function Marks() {
 	const data = {
 		column_names: [
-			"No.",
-			"Name",
-			"15min test",
-			"45min test",
-			"final test"
+			"STT",
+			"Họ và tên",
+			"Kiểm tra 15p",
+			"Kiểm tra 1 tiết",
+			"Kiểm tra cuối HK"
 		],
 		rows: [
 			{ name: "Nguyen Van A", results: [10, 10, 10] },
@@ -35,24 +35,24 @@ export default function Marks() {
 	}
 
 	const editButton = <button onClick={handleClick} class="ml-2 text-xl bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded">
-		Edit
+		Sửa
 	</button>
 
 	const cancelButton = <button onClick={handleClick} class="ml-2 text-xl bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded">
-		Cancel
+		Huỷ
 	</button>
 
 	const saveButton = <button onClick={handleClick} class="ml-2 text-xl bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded">
-		Save
+		Lưu
 	</button>
 
 	return (
 		<div className="flex flex-col items-center">
-			<h1 className="text-4xl font-bold m-5">Marks</h1>
+			<h1 className="text-4xl font-bold m-5">Điểm</h1>
 			<div className="flex flex-col items-center">
 				<div className='flex w-full items-center m-3'>
-					<span className="text-xl font-bold">Subject: Math</span>
-					<span className="text-xl font-bold mx-4">Class:
+					<span className="text-xl font-bold">Môn: Toán</span>
+					<span className="text-xl font-bold mx-4">Lớp:
 						<select className="border border-violet-300 rounded-md shadow-sm focus:border-violet-300 focus:ring focus:ring-violet-200 focus:ring-opacity-50 ml-2 text-xl font-bold">
 							<option value="10A">10A</option>
 							<option value="10B">10B</option>
@@ -60,7 +60,7 @@ export default function Marks() {
 							<option value="11A">11A</option>
 						</select>
 					</span>
-					<span className="text-xl font-bold">Term:
+					<span className="text-xl font-bold">Học kỳ:
 						<select className="border border-violet-300 rounded-md shadow-sm focus:border-violet-300 focus:ring focus:ring-violet-200 focus:ring-opacity-50 ml-2 text-xl font-bold">
 							<option value="10A">1</option>
 							<option value="10B">2</option>

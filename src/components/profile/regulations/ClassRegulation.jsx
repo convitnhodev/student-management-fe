@@ -7,7 +7,8 @@ const ClassRegulation = (props) => {
 
     useEffect(() => {
         if (props.classesObj.data == null) {
-            props.setPage(props.page - 1);
+            if (props.page - 1 > 0) props.setPage(props.page - 1);
+            else setAllClass([])
         } else if (props.classesObj.data != undefined) {
             setPage(props.classesObj.paging);
             let classObj = props.classesObj.data;

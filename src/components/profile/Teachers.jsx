@@ -7,7 +7,8 @@ const Teachers = (props) => {
 
     useEffect(() => {
         if (props.teachersObj.data == null) {
-            props.setPage(props.page - 1);
+            if (props.page - 1 > 0) props.setPage(props.page - 1);
+            else setAllTeachers([])
         } else if (props.teachersObj.data != undefined) {
             console.log(props.teachersObj);
             setPage(props.teachersObj.paging);
