@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import "flowbite";
 
-import DeleteModal from "../components/profile/modals/DeleteModal";
 import AddClassModal from "../components/profile/modals/AddClassModal";
 import AddSubjectModal from "../components/profile/modals/AddSubjectModal";
 
