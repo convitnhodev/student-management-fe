@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-import LayoutFrame from "../components/profile/LayoutFrame";
-import ProfileInformation from "../components/profile/ProfileInformation";
-import ProfileClass from "../components/profile/ProfileClass";
-import Rules from "../components/profile/Rules";
-import Teachers from "../components/profile/Teachers";
+
 import "flowbite";
+
 import DeleteModal from "../components/profile/modals/DeleteModal";
 import EditClassModal from "../components/profile/modals/EditClassModal";
 import EditSubjectModal from "../components/profile/modals/EditSubjectModal";
@@ -12,6 +9,16 @@ import EditTeacherModal from "../components/profile/modals/EditTeacherModal";
 import AddClassModal from "../components/profile/modals/AddClassModal";
 import AddSubjectModal from "../components/profile/modals/AddSubjectModal";
 import AddTeacherModal from "../components/profile/modals/AddTeacherModal";
+
+import Arrow from "../components/icons/arrow";
+import AgeRegulation from "../components/profile/regulations/AgeRegulation";
+import ClassRegulation from "../components/profile/regulations/ClassRegulation";
+import ScoreRegulation from "../components/profile/regulations/ScoreRegulation";
+import SubjectRegulation from "../components/profile/regulations/SubjectRegulation";
+import LayoutFrame from "../components/profile/LayoutFrame";
+import ProfileInformation from "../components/profile/ProfileInformation";
+import ProfileClass from "../components/profile/ProfileClass";
+import Teachers from "../components/profile/Teachers";
 
 /**
  * This page shows the profile of the user as a teacher.
@@ -24,19 +31,51 @@ import AddTeacherModal from "../components/profile/modals/AddTeacherModal";
 export default function Profile() {
     const [role, setRole] = useState("admin");
 
-    const [student, setStudent] = useState();
-    useEffect(() => {
-        async function getClass() {
-            const data = await fetch("http://localhost:8080/student/get?id=2");
-            const json = await data.json();
+    const [flat, setFlat] = useState(true); // Signal to get classes
+
+    const [classesObj, setClassesObj] = useState({});
+    const [pageClass, setPageClass] = useState(1);
+    const [Class, setClass] = useState();
+
+    const [subjectObj, setSubjectObj] = useState({});
+    const [pageSubject, setPageSubject] = useState(1);
+    const [Subject, setSubject] = useState();
+
+    async function getClasses(page = 1, limit = 5) {    
+        try {
+            let data = await fetch(`http://localhost:8080/class/list?limit=${limit}&page=${page}`);
+            let json = await data.json();
+            setClassesObj(json);
+        } catch (error) {
+            console.log(error);
         }
-        getClass();
-    }, []);
+    }
+
+    async function getSubjects(page = 1, limit = 5) {
+        try {
+            let data = await fetch(`http://localhost:8080/course/list?limit=${limit}&page=${page}`);
+            let json = await data.json();
+            setSubjectObj(json);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+            getClasses(pageClass);
+        
+    }, [pageClass, flat]);
+
+    // useEffect(() => {
+    //     getSubjects(pageSubject);
+    // }, [pageSubject]);
 
     return (
         <>
             <div className="flex flex-col">
                 <h1 className="text-4xl font-bold m-5 text-center py-2">Profile</h1>
+
+                {/* ---------------- ADMIN ------------------- */}
                 {role === "admin" ? (
                     <div>
                         <div className="flex sm:flex-col xl:flex-row my-4">
@@ -51,11 +90,103 @@ export default function Profile() {
                             </div>
 
                             <LayoutFrame title="Quy định nhà trường">
-                                <Rules />
+                                <div className="mx-auto bg-white mt-8 rounded">
+                                    <div id="accordion-collapse" data-accordion="collapse">
+                                        {/* Regulation 1: Change Min/Max Age  */}
+                                        <h2 id="accordion-collapse-heading-1">
+                                            <button
+                                                type="button"
+                                                class="flex items-center justify-between p-5 w-full font-medium text-left border border-purple-300 border-b-0 text-gray-900 bg-gray-100 hover:bg-purple-100 rounded-t-xl"
+                                                data-accordion-target="#accordion-collapse-body-1"
+                                                aria-expanded="false"
+                                                aria-controls="accordion-collapse-body-1"
+                                            >
+                                                <span>Quy định về tuổi</span>
+                                                <Arrow />
+                                            </button>
+                                        </h2>
+                                        <div
+                                            id="accordion-collapse-body-1"
+                                            aria-labelledby="accordion-collapse-heading-1"
+                                        >
+                                            <AgeRegulation />
+                                        </div>
+
+                                        {/* Regulation 2: Change max class size && Class name-size */}
+                                        <h2 id="accordion-collapse-heading-2">
+                                            <button
+                                                type="button"
+                                                class="flex items-center justify-between p-5 w-full font-medium text-left border border-purple-300 border-b-0 text-gray-900 bg-gray-100 hover:bg-purple-100 rounded-t-xl"
+                                                data-accordion-target="#accordion-collapse-body-2"
+                                                aria-expanded="false"
+                                                aria-controls="accordion-collapse-body-2"
+                                            >
+                                                <span>Quy định về lớp học</span>
+                                                <Arrow />
+                                            </button>
+                                        </h2>
+                                        <div
+                                            id="accordion-collapse-body-2"
+                                            class="hidden"
+                                            aria-labelledby="accordion-collapse-heading-2"
+                                        >
+                                            <ClassRegulation
+                                                classesObj={classesObj}
+                                                page={pageClass}
+                                                setPage={setPageClass}
+                                                flat={flat}
+                                                setFlat={setFlat}
+                                            />
+                                        </div>
+
+                                        {/* Regulation 4: Change max the number of subjects && Subject name */}
+                                        <h2 id="accordion-collapse-heading-3">
+                                            <button
+                                                type="button"
+                                                class="flex items-center justify-between p-5 w-full font-medium text-left border border-purple-300 border-b-0 text-gray-900 bg-gray-100 hover:bg-purple-100 rounded-t-xl"
+                                                data-accordion-target="#accordion-collapse-body-3"
+                                                aria-expanded="false"
+                                                aria-controls="accordion-collapse-body-3"
+                                            >
+                                                <span>Quy định về môn học</span>
+                                                <Arrow />
+                                            </button>
+                                        </h2>
+                                        <div
+                                            id="accordion-collapse-body-3"
+                                            class="hidden"
+                                            aria-labelledby="accordion-collapse-heading-3"
+                                        >
+                                            <SubjectRegulation subjectsObj={subjectObj} setPage={setPageSubject} />
+                                        </div>
+
+                                        {/* Regulation 5: Change passing standard score */}
+                                        <h2 id="accordion-collapse-heading-4">
+                                            <button
+                                                type="button"
+                                                class="flex items-center justify-between p-5 w-full font-medium text-left border border-purple-300 border-b-0 text-gray-900 bg-gray-100 hover:bg-purple-100 rounded-t-xl"
+                                                data-accordion-target="#accordion-collapse-body-4"
+                                                aria-expanded="false"
+                                                aria-controls="accordion-collapse-body-4"
+                                            >
+                                                <span>Quy định về điểm chuẩn đạt môn</span>
+                                                <Arrow />
+                                            </button>
+                                        </h2>
+                                        <div
+                                            id="accordion-collapse-body-4"
+                                            class="hidden"
+                                            aria-labelledby="accordion-collapse-heading-4"
+                                        >
+                                            <ScoreRegulation />
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <EditSubjectModal nameSubject={"asdf"} />
                                 <EditClassModal nameClass={"as"} size={5} />
                                 <EditTeacherModal />
-                                <AddClassModal />
+                                <AddClassModal flat={flat} setFlat={setFlat} />
                                 <AddSubjectModal />
                             </LayoutFrame>
                         </div>
@@ -65,17 +196,21 @@ export default function Profile() {
                         </LayoutFrame>
                     </div>
                 ) : (
-                    <div className="flex sm:flex-col xl:flex-row my-4">
-                        <div className="flex-1 h-fit flex xl:flex-row lg:flex-col md:flex-col sm:flex-col">
-                            <LayoutFrame title="Hồ sơ cá nhân">
-                                <ProfileInformation />
-                            </LayoutFrame>
+                    {
+                        /* ---------------- User ------------------- */
+                    }(
+                        <div className="flex sm:flex-col xl:flex-row my-4">
+                            <div className="flex-1 h-fit flex xl:flex-row lg:flex-col md:flex-col sm:flex-col">
+                                <LayoutFrame title="Hồ sơ cá nhân">
+                                    <ProfileInformation />
+                                </LayoutFrame>
 
-                            <LayoutFrame title="Lớp học">
-                                <ProfileClass />
-                            </LayoutFrame>
-                        </div>
-                    </div>
+                                <LayoutFrame title="Lớp học">
+                                    <ProfileClass />
+                                </LayoutFrame>
+                            </div>
+                        </div>,
+                    )
                 )}
 
                 {/* Modal */}

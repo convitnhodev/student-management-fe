@@ -1,7 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import CancelIconModel from "../../icons/CancelIconModel";
 
-const AddClassModal = ({ nameClass, size }) => {
+const AddClassModal = (props) => {
+    const [data, setData] = useState({
+        class_id: "",
+        grade: "",
+        homeroom_teacher: "",
+    });
+
+    const [status, setStatus] = useState(0);
+
+    const changeClassName = (e) => {
+        setData({
+            ...data,
+            class_id: e.target.value,
+        });
+    };
+
+    const changeGrade = (e) => {
+        setData({
+            ...data,
+            grade: parseInt(e.target.value),
+        });
+    };
+
+    const changeHomeroom = (e) => {
+        setData({
+            ...data,
+            homeroom_teacher: e.target.value,
+        });
+    };
+
+    const AddClass = async () => {
+        try {
+            const requestOptions = {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            };
+            await fetch("http://localhost:8080/class/new", requestOptions);
+            props.setFlat(!props.flat);
+            setStatus(1);
+        } catch (error) {
+            setStatus(-1);
+        } finally {
+            setTimeout(() => {
+                setStatus(0);
+            }, 2000);
+        }
+    };
+
     return (
         <div
             id="add-class-modal"
@@ -29,17 +77,19 @@ const AddClassModal = ({ nameClass, size }) => {
                                         <input
                                             type={"text"}
                                             className="grow placeholder:italic placeholder:text-slate-400 block bg-purple-50 border-purple-800 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none sm:text-sm outline-none border"
-                                            placeholder="xsy"
+                                            placeholder="VD: 12a2"
+                                            onChange={changeClassName}
                                         />
                                     </div>
                                 </div>
                                 <div className="col-span-4 place-items-center">
                                     <div className="flex items-center justify-between w-full">
-                                        <label className="w-28">Sĩ số: </label>
+                                        <label className="w-28">Khối: </label>
                                         <input
-                                            type={"number"}
+                                            type={"text"}
                                             className="grow placeholder:italic placeholder:text-slate-400 block bg-purple-50 border-purple-800 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none sm:text-sm outline-none border"
-                                            placeholder="xsy"
+                                            placeholder="VD: 12"
+                                            onChange={changeGrade}
                                         />
                                     </div>
                                 </div>
@@ -48,27 +98,34 @@ const AddClassModal = ({ nameClass, size }) => {
                                         <label className="w-28">GVCN</label>
                                         <select
                                             id="role"
+                                            onChange={changeHomeroom}
                                             class="grow border border-purple-800 bg-purple-50 text-gray-900 text-sm rounded-lg block py-2 pl-9 pr-3 outline-none "
                                         >
                                             <option selected>--Chọn GVCN--</option>
+                                            <option value={"13"}>13</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                             <div className="flex flex-row items-center justify-center">
                                 <button
-                                    type="submit"
+                                    onClick={AddClass}
+                                    type="button"
                                     className="w-1/4 mx-4 text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                                 >
                                     Thêm
                                 </button>
                                 <button
+                                    data-modal-toggle="add-class-modal"
                                     type="reset"
                                     className="w-1/4 mx-4 text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                                 >
-                                    Xóa
+                                    Hủy
                                 </button>
                             </div>
+
+                            {status === 1 && <p className="text-green-700 text-center text-lg"> Tạo lớp thành công</p>}
+                            {status === -1 && <p className="text-red-700 text-center text-lg"> Tạo lớp thất bại</p>}
                         </form>
                     </div>
                 </div>

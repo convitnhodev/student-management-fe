@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Teachers = () => {
+    const [isEdit, setIsEdit] = useState(false);
+    
+
+    const submitEdit = () => {
+        setIsEdit(!isEdit)
+    };
     return (
         <>
             <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th className="w-4 py-3 px-6 text-center">#</th>
+                            <th className="w-4 py-3 px-3 text-center">#</th>
                             <th className="w-40 py-3 px-3">Họ tên</th>
                             <th className="w-32 py-3 px-3">Ngày sinh</th>
                             <th className="w-28 py-3 px-3 text-center">Giới tính</th>
@@ -28,35 +34,104 @@ const Teachers = () => {
                     </thead>
                     <tbody>
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <th className="w-4 py-3 px-6 text-center">1</th>
+                            <th className="w-4 py-3 px-3 text-center">1</th>
                             <th
                                 scope="row"
                                 className="w-40 py-3 px-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                Nguyễn Văn A
+                                {isEdit ? (
+                                    <input
+                                        type="text"
+                                        className="border-none w-full bg-purple-100 rounded-sm text-sm font-normal"
+                                    />
+                                ) : (
+                                    "Nguyễn Văn A"
+                                )}
                             </th>
-                            <td className="w-32 py-3 px-3">22-12-2002</td>
-                            <td className="w-28 py-3 px-3 text-center">Nam</td>
-                            <td className="w-40 py-3 px-3">
-                                <p className="w-40 overflow-hidden whitespace-nowrap text-ellipsis">
-                                    227 NVC, Q5, HCM asdf asdf asdf ádf
-                                </p>
+                            <td className="w-32 py-3 px-3">
+                                {isEdit ? (
+                                    <input
+                                        type="date"
+                                        className="border-none w-full bg-purple-100 rounded-sm text-sm font-normal"
+                                    />
+                                ) : (
+                                    "22/12/2002"
+                                )}
+                            </td>
+                            <td className="w-36 py-3 px-3 text-center">
+                                {isEdit ? (
+                                    <select className="border-none w-full bg-purple-100 rounded-sm text-sm font-normal">
+                                        <option value={"male"}>Nam</option>
+                                        <option value={"female"}>Nữ</option>
+                                    </select>
+                                ) : (
+                                    "Nam"
+                                )}
                             </td>
                             <td className="w-40 py-3 px-3">
-                                <p className="w-40 overflow-hidden whitespace-nowrap text-ellipsis">
-                                    227 NVC, Q5, HCM asdf asdf asdf ádf
-                                </p>
+                                {!isEdit ? (
+                                    <p className="w-40 overflow-hidden whitespace-nowrap text-ellipsis">
+                                        227 NVC, Q5, HCM asdf asdf asdf ádf
+                                    </p>
+                                ) : (
+                                    <input
+                                        type="text"
+                                        className="border-none w-full bg-purple-100 rounded-sm text-sm font-normal"
+                                    />
+                                )}
                             </td>
-                            <td className="w-40 py-3 px-3">Hiệu trưởng</td>
-                            <td className="w-36 py-3 px-3"></td>
-                            <td className="w-36 py-3 px-3 text-center flex flex-row">
-                                <button
-                                    type="button"
-                                    data-modal-toggle="edit-teacher-modal"
-                                    className="font-medium text-blue-600 hover:underline pr-6"
-                                >
-                                    Chỉnh sửa
-                                </button>
+                            <td className="w-40 py-3 px-3">
+                                {!isEdit ? (
+                                    <p className="w-40 overflow-hidden whitespace-nowrap text-ellipsis">
+                                        227 NVC, Q5, HCM asdf asdf asdf ádf
+                                    </p>
+                                ) : (
+                                    <input
+                                        type="text"
+                                        className="border-none w-full bg-purple-100 rounded-sm text-sm font-normal"
+                                    />
+                                )}
+                            </td>
+                            <td className="w-40 py-3 px-3">
+                                {/* Hiệu trưởng */}
+                                {isEdit ? (
+                                    <select className="border-none w-full bg-purple-100 rounded-sm text-sm font-normal">
+                                        <option value={"teacher"}>Giáo viên</option>
+                                        <option value={"admin"}>Hiệu trưởng</option>
+                                    </select>
+                                ) : (
+                                    "Giáo viên"
+                                )}
+                            </td>
+                            <td className="w-36 py-3 px-3">
+                                {isEdit ? (
+                                    <select className="border-none w-full bg-purple-100 rounded-sm text-sm font-normal">
+                                        <option>12a1</option>
+                                        <option>12a2</option>
+                                    </select>
+                                ) : (
+                                    "12a1"
+                                )}
+                            </td>
+                            <td className="w-36 py-3 px-3 flex flex-row items-center justify-center ">
+                                {!isEdit ? (
+                                    <button
+                                        type="button"
+                                        className="font-medium text-blue-600 hover:underline pr-6"
+                                        onClick={() => setIsEdit(!isEdit)}
+                                    >
+                                        Chỉnh sửa
+                                    </button>
+                                ) : (
+                                    <button
+                                        type="button"
+                                        data-modal-toggle="edit-teacher-modal"
+                                        className="font-medium text-green-600 hover:underline pr-6"
+                                        onClick={submitEdit}
+                                    >
+                                        Đồng ý
+                                    </button>
+                                )}
                                 <button
                                     type="button"
                                     data-modal-toggle="delete-modal"

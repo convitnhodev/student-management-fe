@@ -1,8 +1,20 @@
-import React from "react";
-import EditSubjectModal from "../modals/EditSubjectModal";
-import DeleteModal from "../modals/DeleteModal";
+import React, { useEffect, useState } from "react";
 
-const SubjectRegulation = () => {
+const SubjectRegulation = (props) => {
+    const [allSubject, setAllSubject] = useState([]);
+    const [page, setPage] = useState({});
+
+    useEffect(() => {
+        if (props.subjectsObj.data !== undefined) {
+            setAllSubject(props.subjectsObj.data);
+            setPage(props.subjectsObj.paging);
+        }
+    }, [props]);
+
+    const clickPagination = (e) => {
+        props.setPage(parseInt(e.target.innerHTML));
+    };
+
     return (
         <div className="p-5 border border-gray-200 border-b-0">
             <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
@@ -24,9 +36,11 @@ const SubjectRegulation = () => {
                         </tr>
                     </thead>
                     <tbody>
+                        {/* {allSubject.map((s, i) => {
+                            return ( */}
                         <tr className="bg-white border-b hover:bg-gray-50">
                             <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
-                                Hóa lý 2
+                                1234
                             </th>
                             <td className="py-4 px-6  text-center">
                                 <button
@@ -45,53 +59,60 @@ const SubjectRegulation = () => {
                                 </button>
                             </td>
                         </tr>
+                        <tr className="bg-white border-b hover:bg-gray-50">
+                            <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
+                                1234
+                            </th>
+                            <td className="py-4 px-6  text-center">
+                                <button
+                                    type="button"
+                                    data-modal-toggle="edit-subject-modal"
+                                    className="font-medium text-blue-600 hover:underline pr-6"
+                                >
+                                    Chỉnh sửa
+                                </button>
+                                <button
+                                    type="button"
+                                    data-modal-toggle="delete-modal"
+                                    className="font-medium text-red-600 hover:underline"
+                                >
+                                    Xóa
+                                </button>
+                            </td>
+                        </tr>
+                        {/* );
+                        })} */}
                     </tbody>
                 </table>
             </div>
 
             <nav aria-label="Page navigation example">
                 <ul className="mt-6 flex items-center justify-center -space-x-px">
-                    <li>
-                        <a
-                            href="#"
-                            className="block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700"
-                        >
-                            &lt;
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="#"
-                            className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                            1
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="#"
-                            className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                            2
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="#"
-                            className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                            3
-                        </a>
-                    </li>
-
-                    <li>
-                        <a
-                            href="#"
-                            className="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700"
-                        >
-                            &gt;
-                        </a>
-                    </li>
+                    {Array.from(Array(page.total_page), (e, i) => {
+                        if (i + 1 === page.page) {
+                            return (
+                                <li key={i}>
+                                    <button
+                                        className="px-3 py-2 leading-tight text-gray-500 bg-slate-300 border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+                                        onClick={clickPagination}
+                                    >
+                                        {i + 1}
+                                    </button>
+                                </li>
+                            );
+                        } else {
+                            return (
+                                <li key={i}>
+                                    <button
+                                        className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+                                        onClick={clickPagination}
+                                    >
+                                        {i + 1}
+                                    </button>
+                                </li>
+                            );
+                        }
+                    })}
                 </ul>
             </nav>
 
