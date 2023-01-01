@@ -25,7 +25,7 @@ export default function Sidebar() {
   function handleRole() {
     let role = parseInt(localStorage.getItem("role"));
     console.log(role);
-    if (role === 3) {
+    if (role >= 1) {
       return (
         <Link to={`notify`}>
           <SidebarIcon icon={<FaBell size="30" />} text="Notify" />
