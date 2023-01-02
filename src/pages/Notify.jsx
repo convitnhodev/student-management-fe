@@ -46,9 +46,11 @@ export default function Notify() {
     window.location.reload();
   }
   useEffect(() => {
-    let temp = null;
+    let temp = [];
     getData().then((res) => {
       temp = res.data;
+      temp = temp.filter((item) => !item.seen);
+      console.log(temp);
       if (temp) setNotify(temp);
     });
   }, []);
