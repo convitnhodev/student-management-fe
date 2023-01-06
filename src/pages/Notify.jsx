@@ -13,7 +13,7 @@ export default function Notify() {
   let [notify, setNotify] = useState([]);
   let getData = async () => {
     return axios
-      .get("http://localhost:8080/notification/list")
+      .get("http://localhost:8080/user/list")
       .then((res) => {
         return res.data;
       })
@@ -35,21 +35,20 @@ export default function Notify() {
     }
     console.log(checked);
   }
-  function handleAccept(status) {
+  function handleAccept() {
     checked.forEach((item) => {
-      axios.post(
-        `http://localhost:8080/notification/acp/user?status=${status}`,
-        item
+      console.log(item.username);
+      axios.patch(
+        `http://localhost:8080/user/accept?username=${item.username}`
       );
-      console.log(JSON.stringify({ agent: item.agent }));
+      window.location.reload();
     });
-    window.location.reload();
   }
   useEffect(() => {
     let temp = [];
     getData().then((res) => {
       temp = res.data;
-      temp = temp.filter((item) => !item.seen);
+      temp = temp.filter((item) => !item.acp);
       console.log(temp);
       if (temp) setNotify(temp);
     });
@@ -98,13 +97,13 @@ export default function Notify() {
                     className="py-4 px-12
                      font-medium text-violet-900 whitespace-nowrap"
                   >
-                    {row.agent}
+                    {row.username}
                   </td>
                   <td
                     scope="row"
                     className="py-4 px-12 font-medium text-violet-900 whitespace-nowrap"
                   >
-                    {row.content}
+                    {row.username} want to join your group
                   </td>
                   <td
                     scope="row"
@@ -127,7 +126,7 @@ export default function Notify() {
       <div>
         <button
           className="bg-violet-500 mt-3 rounded mr-2 hover:bg-violet-700 text-white shadow-md"
-          onClick={handleAccept.bind(this, 1)}
+          onClick={handleAccept}
         >
           <div className=" m-1 p-2.5 flex items-center px-4 duration-300 cursor-pointer ">
             {<FaRegCheckSquare size={30} />}
