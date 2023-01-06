@@ -123,20 +123,28 @@ export default function SignUp() {
 				email,
 				dob: (new Date(birthday)).toJSON(),
 			}
-			console.log(userData);
 
-			const result = await axios.post("http://localhost:8080/user/register", userData);
-			const data = await result.json();
-			if (data.data) {
-				window.location.href = "/SignIn";
+			try {
+				const response = await axios.post("http://localhost:8080/user/register", userData);
+				console.log(response);
+				if (response.data.data) {
+					window.location.href = "/SignIn";
+				}
+			} catch (error) {
+				if (error.response.data.key === "User Existed") {
+					setErr({ ...err, username: "Tên đăng nhập đã tồn tại" });
+				}
 			}
+
+
+
 		}
 	};
 
 	return (
-		<section className="h-screen z-10 bg-violet-100">
+		<section className="h-screen z-10 bg-violet-100 bg-fixed">
 			<div className="container px-4 py-10 h-full">
-				<div className="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
+				<div className="flex justify-center items-center flex-wrap g-6 text-gray-800">
 					<div className="bg-violet-50 md:w-8/12 lg:w-4/12 lg:ml-20 border border-solid px-16 py-12 rounded">
 						<h1 className=" mb-14  text-violet-800 font-bold text-4xl text-center">
 							ĐĂNG KÝ
@@ -154,6 +162,9 @@ export default function SignUp() {
 									value={username}
 								/>
 							</div>
+							{err.username && (
+								<p className="text-red-500">{err.username}</p>
+							)}
 							<div className="mb-3">
 								<input
 									type="password"
