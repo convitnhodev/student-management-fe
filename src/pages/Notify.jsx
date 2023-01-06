@@ -49,8 +49,7 @@ export default function Notify() {
     getData().then((res) => {
       temp = res.data;
       temp = temp.filter((item) => !item.acp);
-      console.log(temp);
-      if (temp) setNotify(temp);
+      if (temp) setNotify(temp.reverse());
     });
   }, []);
   const data = {
@@ -130,16 +129,7 @@ export default function Notify() {
         >
           <div className=" m-1 p-2.5 flex items-center px-4 duration-300 cursor-pointer ">
             {<FaRegCheckSquare size={30} />}
-            <span className="sidebar-icon-text px-2">Accept</span>
-          </div>
-        </button>
-        <button
-          className="bg-violet-500 mt-3 rounded ml-2 hover:bg-violet-700 text-white shadow-md"
-          onClick={handleAccept.bind(this, 2)}
-        >
-          <div className=" m-1 p-2.5 flex items-center px-4 duration-300 cursor-pointer ">
-            {<FaRegWindowClose size={30} />}
-            <span className="sidebar-icon-text px-2">Refuse</span>
+            <span className="sidebar-icon-text px-2">Chấp nhận</span>
           </div>
         </button>
       </div>
