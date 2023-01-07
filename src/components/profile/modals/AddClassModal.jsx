@@ -51,7 +51,7 @@ const AddClassModal = (props) => {
                 body: JSON.stringify(data),
             };
             let a = await fetch("http://localhost:8080/class/new", requestOptions);
-            if (a.status === 400) throw new Error("Error");
+            if (a.status >= 400) throw new Error("Error");
             else {
                 props.setFlat(!props.flat);
                 setStatus(1);
@@ -122,7 +122,9 @@ const AddClassModal = (props) => {
                                             </option>
                                             <option value={""}>Chưa xác định</option>
                                             {teachers.map((t, key) => (
-                                                <option key={key} value={t.username}>{t.fullname}</option>
+                                                <option key={key} value={t.username}>
+                                                    {t.fullname}
+                                                </option>
                                             ))}
                                         </select>
                                     </div>

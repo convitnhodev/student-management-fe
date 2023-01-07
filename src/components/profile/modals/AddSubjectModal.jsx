@@ -2,33 +2,42 @@ import React, { useState } from "react";
 
 const AddSubjectModal = (props) => {
     const [data, setData] = useState({
-        subject_title: "",
+        id: "",
+        title: "",
     });
 
     const [status, setStatus] = useState(0);
 
     const changeSubject = (e) => {
         setData({
-            ...data,
-            subject_title: e.target.value,
+            id: e.target.value,
+            title: e.target.value,
         });
     };
 
+    const resetData = () => {
+        setData({
+            id: "",
+            title: "",
+        });
+    };
     const AddSubject = async () => {
         try {
-            let newData = {
-                ...data,
-                course_id: data.subject_title,
-            };
-            console.log(JSON.stringify(newData));
             const requestOptions = {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(newData),
+                body: JSON.stringify(data),
             };
-            await fetch("http://localhost:8080/course/new", requestOptions);
-            props.setFlat(!props.flat);
-            setStatus(1);
+
+            let a = await fetch("http://localhost:8080/subject/new", requestOptions);
+            console.log(a.status);
+            console.log(JSON.stringify(data));
+            if (a.status >= 400) throw new Error("Error");
+            else {
+                props.setFlat(!props.flat);
+                setStatus(1);
+                resetData();
+            }
         } catch (error) {
             setStatus(-1);
         } finally {
@@ -37,6 +46,7 @@ const AddSubjectModal = (props) => {
             }, 2000);
         }
     };
+
     return (
         <div
             id="add-subject-modal"

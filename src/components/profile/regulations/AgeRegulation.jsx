@@ -15,14 +15,6 @@ const AgeRegulation = (props) => {
         });
     };
 
-    const resetData = () => {
-        setData({
-            ...data,
-            MinAge: 12,
-            MaxAge: 50,
-        });
-    };
-
     const handleSubmit = async () => {
         try {
             setStatus(0);
@@ -33,7 +25,7 @@ const AgeRegulation = (props) => {
             };
 
             let a = await fetch("http://localhost:8080/rules/update", requestOptions);
-            if (a.status > 400) throw new Error("Error");
+            if (a.status >= 400) throw new Error("Error");
             else {
                 setStatus(1);
                 props.setRules({
@@ -61,7 +53,7 @@ const AgeRegulation = (props) => {
                         className="placeholder:italic placeholder:text-slate-400 block bg-purple-50 border-purple-800 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none sm:text-sm outline-none border"
                         placeholder="VD: 12"
                         name="MinAge"
-                        value={data.MinAge}
+                        defaultValue={data.MinAge}
                         onChange={handleChange}
                     />
                 </div>
@@ -72,7 +64,7 @@ const AgeRegulation = (props) => {
                         className="placeholder:italic placeholder:text-slate-400 block bg-purple-50 border-purple-800 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none sm:text-sm outline-none border"
                         placeholder="VD: 18"
                         name="MaxAge"
-                        value={data.MaxAge}
+                        defaultValue={data.MaxAge}
                         onChange={handleChange}
                     />
                 </div>
@@ -80,18 +72,10 @@ const AgeRegulation = (props) => {
             <div className="flex flex-row w-full items-center justify-center mt-8">
                 <button
                     type="button"
-                    className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-4 mb-2 "
+                    className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 "
                     onClick={handleSubmit}
                 >
                     Thay đổi
-                </button>
-
-                <button
-                    type="button"
-                    className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-4 mb-2 "
-                    onClick={resetData}
-                >
-                    Mặc định
                 </button>
             </div>
             {status === 1 && <p className="text-green-700 text-center text-lg mt-3"> Thay đổi thành công</p>}

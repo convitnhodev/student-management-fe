@@ -16,24 +16,39 @@ const ClassRegulation = (props) => {
     }, [props.rules]);
 
     useEffect(() => {
-        setAllClass(props.classes);
-        let classObj = props.classes;
+        if (props.classes === null) setAllClass([]);
+        else {
+            setAllClass(props.classes);
+            let classObj = props.classes;
 
-        for (let i = 0; i < classObj.length; i++) {
-            classObj[i] = {
-                ...classObj[i],
-                isEdit: false,
-            };
-            setNClass((array) => [
-                ...array,
-                {
-                    grade: classObj[i].grade,
-                    class_id: classObj[i].class_id,
-                    homeroom_teacher: classObj[i].homeroom_teacher,
-                },
-            ]);
+            for (let i = 0; i < classObj.length; i++) {
+                classObj[i] = {
+                    ...classObj[i],
+                    isEdit: false,
+                };
+                setNClass((array) => [
+                    ...array,
+                    {
+                        grade: classObj[i].grade,
+                        class_id: classObj[i].class_id,
+                        homeroom_teacher: classObj[i].homeroom_teacher,
+                    },
+                ]);
+            }
         }
     }, [props.classes]);
+
+    const resetEdit = (index) => {
+        let setArray = [...nClass];
+        let item = {
+            ...setArray[index],
+            grade: allClass[index].grade,
+            class_id: allClass[index].class_id,
+            homeroom_teacher: allClass[index].homeroom_teacher,
+        };
+        setArray[index] = item;
+        setNClass(setArray);
+    };
 
     const handleEdit = (index) => {
         let setArray = [...allClass];
@@ -43,17 +58,19 @@ const ClassRegulation = (props) => {
     };
 
     const handleSubmit = async (index) => {
+        resetEdit(index);
         let setArray = [...allClass];
         let item = { ...setArray[index], isEdit: !setArray[index].isEdit };
         setArray[index] = item;
         setAllClass(setArray);
 
         // call API
-        // const requestOptions = {
-        //     method: "POST",
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify(nClass[index]),
-        // };
+        const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(nClass[index]),
+        };
+
 
         // await fetch("http://localhost:8080/class/")
     };
@@ -63,13 +80,6 @@ const ClassRegulation = (props) => {
         let item = { ...setArray[i], [e.target.name]: e.target.value };
         setArray[i] = item;
         setNClass(setArray);
-    };
-
-    const resetData = () => {
-        setRules({
-            ...rules,
-            MaxStudent: 50,
-        });
     };
 
     const changeMaxStudent = (e) => {
@@ -89,7 +99,7 @@ const ClassRegulation = (props) => {
             };
 
             let a = await fetch("http://localhost:8080/rules/update", requestOptions);
-            if (a.status > 400) throw new Error("Error");
+            if (a.status >= 400) throw new Error("Error");
             else {
                 setStatus(1);
                 props.setRules({
@@ -192,8 +202,9 @@ const ClassRegulation = (props) => {
                                                 <option selected hidden>
                                                     -- Chọn giáo viên --
                                                 </option>
-                                                {teachers.map((t) => (
+                                                {teachers.map((t, key) => (
                                                     <option
+                                                        key={key}
                                                         value={t.username}
                                                         selected={nClass[key].homeroom_teacher === t.username}
                                                     >
@@ -248,25 +259,17 @@ const ClassRegulation = (props) => {
                     className="placeholder:italic placeholder:text-slate-400 block bg-purple-50 border-purple-800 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none sm:text-sm outline-none border"
                     placeholder="15"
                     name="MaxStudent"
-                    value={rules.MaxStudent}
+                    defaultValue={rules.MaxStudent}
                     onChange={changeMaxStudent}
                 />
             </div>
             <div className="flex flex-row w-full items-center justify-center mt-8">
                 <button
                     type="button"
-                    className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-4 mb-2 "
+                    className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5"
                     onClick={handleSubmitRules}
                 >
                     Thay đổi
-                </button>
-
-                <button
-                    type="button"
-                    className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-4 mb-2 "
-                    onClick={resetData}
-                >
-                    Mặc định
                 </button>
             </div>
             {status === 1 && <p className="text-green-700 text-center text-lg mt-3"> Thay đổi thành công</p>}

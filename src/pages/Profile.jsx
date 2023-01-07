@@ -169,7 +169,12 @@ export default function Profile() {
                                             class="hidden"
                                             aria-labelledby="accordion-collapse-heading-3"
                                         >
-                                            {/* <SubjectRegulation subjectsObj={subjects} /> */}
+                                            <SubjectRegulation
+                                                subjects={subjects}
+                                                setSubjects={setSubjects}
+                                                flat={flat}
+                                                setFlat={setFlat}
+                                            />
                                         </div>
 
                                         {/* Regulation 5: Change passing standard score */}
@@ -190,13 +195,13 @@ export default function Profile() {
                                             class="hidden"
                                             aria-labelledby="accordion-collapse-heading-4"
                                         >
-                                            <ScoreRegulation />
+                                            <ScoreRegulation rules={rules} setRules={setRules} />
                                         </div>
                                     </div>
                                 </div>
 
                                 <AddClassModal teachers={teachers} flat={flat} setFlat={setFlat} />
-                                <AddSubjectModal />
+                                <AddSubjectModal flat={flat} setFlat={setFlat} />
                             </LayoutFrame>
                         </div>
                         <LayoutFrame title="Quản lý giáo viên">{/* <Teachers teachersObj={teachers} /> */}</LayoutFrame>
