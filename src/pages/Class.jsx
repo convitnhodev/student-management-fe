@@ -4,6 +4,7 @@ import Button from '../components/Button';
 import { useEffect } from 'react';
 import AddStudent from './AddStudent';
 import { Link, useParams } from 'react-router-dom';
+import { getListStudentInClass, getClass } from '../api/class';
 
 /**
  * This page shows the marks of all students with a specific subject.
@@ -11,39 +12,54 @@ import { Link, useParams } from 'react-router-dom';
  * @returns JSX.Element as a page
  */
 export default function Class() {
-  const data = {
-    column_names: [
-      'STT',
-      'Họ và tên',
-      'Ngày sinh',
-      'Giới tính',
-      'Địa chỉ',
-      'Email',
-    ],
-    rows: [
-      {
-        name: 'Nguyen Van A',
-        results: ['1/1/2000', 'Male', 'VN', 'abc@email.com'],
-      },
-      {
-        name: 'Nguyen Van B',
-        results: ['1/1/2000', 'Male', 'VN', 'abc@email.com'],
-      },
-      {
-        name: 'Nguyen Van C',
-        results: ['1/1/2000', 'Male', 'VN', 'abc@email.com'],
-      },
-      {
-        name: 'Nguyen Van D',
-        results: ['1/1/2000', 'Male', 'VN', 'abc@email.com'],
-      },
-    ],
-  };
+  const column_names = [
+    'STT',
+    'Họ và tên',
+    'Ngày sinh',
+    'Giới tính',
+    'Địa chỉ',
+    'Email',
+  ];
+
   const { id } = useParams();
-  const [className, setClassName] = React.useState('10A1');
-  const [numOfStudents, setNumOfStudents] = React.useState(30);
-  const [students, setStudents] = React.useState(data.rows);
+  const [className, setClassName] = React.useState('');
+  const [numOfStudents, setNumOfStudents] = React.useState(0);
+  const [students, setStudents] = React.useState([]);
   const [isAdding, setIsAdding] = React.useState(false);
+  const shouldRender = React.useRef(true);
+
+  useEffect(() => {
+    const getDataClass = async () => {
+      if (id !== undefined) {
+        const dataClass = await getClass(id);
+        setClassName(dataClass.data.class_id);
+        setNumOfStudents(dataClass.data.total);
+
+        const dataStudent = await getListStudentInClass(id);
+        let dataStudentTemp = [];
+        console.log(dataStudent.data);
+        dataStudent.data.forEach((item, index) => {
+          const sex = item.sex ? 'Nam' : 'Nữ';
+          const dob = new Date(item.dob);
+          const dobString = dob.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+          });
+          dataStudentTemp.push({
+            name: item.fullname,
+            results: [dobString, sex, item.address, item.email],
+          });
+        });
+        console.log(dataStudentTemp);
+        setStudents(dataStudentTemp);
+      }
+    };
+    if (shouldRender.current) {
+      shouldRender.current = false;
+      getDataClass();
+    }
+  }, []);
 
   // useEffect(() => {
   //   if (id !== undefined) {
@@ -76,14 +92,6 @@ export default function Class() {
     setStudents([...students, { name: student.name, results: result }]);
     setIsAdding(false);
     setNumOfStudents(numOfStudents + 1);
-  };
-
-  const onCancel = () => {
-    window.history.back();
-  };
-
-  const onDone = () => {
-    window.history.back();
   };
 
   return (
@@ -121,7 +129,10 @@ export default function Class() {
           />
         </div>
       </div>
-      <Table data={{ column_names: data.column_names, rows: students }} />
+      <Table
+        isEditing={false}
+        data={{ column_names: column_names, rows: students }}
+      />
 
       <button className="mt-10" onClick={handleAddStudent}>
         <svg
@@ -140,18 +151,6 @@ export default function Class() {
         </svg>
       </button>
 
-      <div className="flex">
-        <Button
-          nameBtn={'Cancel'}
-          className={'mr-10 bg-neutral-400 hover:bg-gray-700'}
-          onClickButton={onCancel}
-        />
-        <Button
-          nameBtn={'Done'}
-          onClickButton={onDone}
-          className={'done-btn'}
-        />
-      </div>
       <AddStudent
         isOpen={isAdding}
         onAddStudent={handleAddStudentSubmit}
