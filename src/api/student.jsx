@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const URL = 'http://localhost:8080/class';
+const URL = 'http://localhost:8080/student';
 
-export const getClass = async (idClass) => {
+export const newStudent = async (student) => {
   return axios
-    .get(`${URL}/get?class_id=${idClass}`)
+    .post(`${URL}/new`, student)
     .then((res) => {
       return res.data;
     })
