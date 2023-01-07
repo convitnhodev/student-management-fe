@@ -12,3 +12,14 @@ export const newStudent = async (student) => {
       console.log(err);
     });
 };
+
+export const getStudent = async (idStudent) => {
+  return axios
+    .get(`${URL}/get?id=${idStudent}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
