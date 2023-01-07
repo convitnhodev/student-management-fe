@@ -23,3 +23,14 @@ export const getStudent = async (idStudent) => {
       console.log(err);
     });
 };
+
+export const updateStudent = async (student) => {
+  return axios
+    .patch(`${URL}/update`, student)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};

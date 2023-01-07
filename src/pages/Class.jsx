@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import AddStudent from './AddStudent';
 import { Link, useParams } from 'react-router-dom';
 import { getListStudentInClass, getClass } from '../api/class';
-
+import { newStudent } from '../api/student';
 /**
  * This page shows the marks of all students with a specific subject.
  * It also allows the user to update the marks of a student
@@ -82,16 +82,9 @@ export default function Class() {
     setIsAdding(false);
   };
 
-  const handleAddStudentSubmit = (student) => {
-    const result = [
-      student.date,
-      student.gender,
-      student.address,
-      student.email,
-    ];
-    setStudents([...students, { name: student.name, results: result }]);
+  const handleAddStudentSubmit = async (student) => {
+    const newST = await newStudent(student);
     setIsAdding(false);
-    setNumOfStudents(numOfStudents + 1);
   };
 
   return (

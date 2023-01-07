@@ -3,7 +3,8 @@ import SidebarIcon from '../components/SidebarIcon';
 import { FaUserGraduate } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { getStudent } from '../api/student';
+import { getStudent, updateStudent } from '../api/student';
+import AddStudent from './AddStudent';
 
 /**
  * The Student page shows a student's information, which includes:
@@ -14,6 +15,7 @@ import { getStudent } from '../api/student';
 export default function Student() {
   const { id } = useParams();
   const [student, setStudent] = React.useState({});
+  const [isAdding, setIsAdding] = React.useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,6 +55,24 @@ export default function Student() {
       mark: 10,
     },
   ];
+
+  const handleAddStudent = () => {
+    const modal = document.getElementById('modal');
+    if (modal.classList.contains('hidden') && isAdding) {
+      setIsAdding(false);
+      return;
+    }
+    setIsAdding(true);
+  };
+
+  const handleCancelAddStudent = () => {
+    setIsAdding(false);
+  };
+
+  const handleAddStudentSubmit = async (student) => {
+    const updateST = await updateStudent(student);
+    setIsAdding(false);
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
@@ -105,6 +125,14 @@ export default function Student() {
                 </div>
                 <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                   <dt className="text-sm font-medium text-gray-500 pr-10">
+                    Giới tính
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                    {student.sex ? 'Nam' : 'Nữ'}
+                  </dd>
+                </div>
+                <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500 pr-10">
                     Địa chỉ
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
@@ -120,6 +148,14 @@ export default function Student() {
                   </dd>
                 </div>
               </dl>
+            </div>
+            <div className="py-5 px-4">
+              <button
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                onClick={handleAddStudent}
+              >
+                Cập nhật thông tin
+              </button>
             </div>
           </div>
         </div>
@@ -156,6 +192,13 @@ export default function Student() {
           </div>
         </div>
       </div>
+      <AddStudent
+        isOpen={isAdding}
+        onAddStudent={handleAddStudentSubmit}
+        cancelOpen={handleCancelAddStudent}
+        classID={id}
+        student={student}
+      />
     </div>
   );
 }

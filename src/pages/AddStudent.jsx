@@ -2,15 +2,34 @@ import React from 'react';
 import { useEffect } from 'react';
 import { newStudent } from '../api/student';
 
-const AddStudent = ({ isOpen, onAddStudent, cancelOpen, classID }) => {
+const AddStudent = ({ isOpen, onAddStudent, cancelOpen, classID, student }) => {
   const modalHandler = () => {
     const modal = document.getElementById('modal');
     modal.classList.toggle('hidden');
   };
 
+  const convertDate = (inputFormat) => {
+    function pad(s) {
+      return s < 10 ? '0' + s : s;
+    }
+    var d = new Date(inputFormat);
+    return [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join('-');
+  };
+
   useEffect(() => {
     if (isOpen) {
       modalHandler();
+    }
+    if (student) {
+      console.log(student);
+      setIDStudent(student.id);
+      setFullName(student.fullname);
+      setClassID(student.class_id);
+      setSex(student.sex);
+      const dob = convertDate(student.dob);
+      setDate(dob);
+      setAddress(student.address);
+      setEmail(student.email);
     }
   }, [isOpen]);
 
@@ -25,6 +44,7 @@ const AddStudent = ({ isOpen, onAddStudent, cancelOpen, classID }) => {
   const [date, setDate] = React.useState('');
   const [address, setAddress] = React.useState('');
   const [email, setEmail] = React.useState('');
+  const [class_id, setClassID] = React.useState('');
   const [errors, setErrors] = React.useState({});
 
   const handleChange = (e) => {
@@ -37,6 +57,10 @@ const AddStudent = ({ isOpen, onAddStudent, cancelOpen, classID }) => {
 
       case 'fullName':
         setFullName(value);
+        break;
+
+      case 'class_id':
+        setClassID(value);
         break;
 
       case 'male':
@@ -125,9 +149,9 @@ const AddStudent = ({ isOpen, onAddStudent, cancelOpen, classID }) => {
       dob: new Date(date).toJSON(),
       address,
       email,
-      class_id: classID,
+      class_id: class_id === '' ? classID : class_id,
     };
-    const newST = await newStudent(student);
+
     onAddStudent(student);
     modalHandler();
   };
@@ -182,6 +206,25 @@ const AddStudent = ({ isOpen, onAddStudent, cancelOpen, classID }) => {
             />
             {errors.fullName ? (
               <p className="text-red-500 text-xs italic">{errors.fullName}</p>
+            ) : null}
+            {student ? (
+              <div>
+                <label
+                  htmlFor="classID"
+                  className="text-gray-800 text-sm font-bold leading-tight tracking-normal"
+                >
+                  Lớp
+                </label>
+                <input
+                  type={'text'}
+                  name="class_id"
+                  id="class_id"
+                  className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
+                  placeholder="Nhập mã lớp học sinh"
+                  onChange={handleChange}
+                  value={class_id}
+                />
+              </div>
             ) : null}
             <div>
               <input
