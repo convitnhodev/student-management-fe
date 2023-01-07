@@ -62,7 +62,7 @@ export default function Profile() {
         try {
             let data = await fetch(`http://localhost:8080/subject/list`);
             let json = await data.json();
-            setSubjects(json);
+            setSubjects(json.data);
         } catch (error) {
             console.log(error);
         }
