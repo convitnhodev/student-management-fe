@@ -26,58 +26,47 @@ import Teachers from "../components/profile/Teachers";
 export default function Profile() {
     const [role, setRole] = useState("admin");
 
-    const [flat, setFlat] = useState(true); // Signal to get classes
+    const [flat, setFlat] = useState(false);
 
-    const [classesObj, setClassesObj] = useState({});
-    const [pageClass, setPageClass] = useState(1);
+    const [classes, setClasses] = useState([]);
+    const [subjects, setSubjects] = useState([]);
+    const [teachers, setTeachers] = useState([]);
 
-    const [subjectObj, setSubjectObj] = useState({});
-    const [pageSubject, setPageSubject] = useState(1);
-
-    const [teacherObj, setTeacherObj] = useState({});
-    const [pageTeacher, setPageTeacher] = useState(1);
-
-    async function getClasses(page = 1, limit = 5) {
+    async function getClasses() {
         try {
-            let data = await fetch(`http://localhost:8080/class/list?limit=${limit}&page=${page}`);
+            let data = await fetch(`http://localhost:8080/class/list`);
             let json = await data.json();
-            setClassesObj(json);
+            setClasses(json.data);
         } catch (error) {
             console.log(error);
         }
     }
 
-    async function getSubjects(page = 1, limit = 5) {
+    async function getSubjects() {
         try {
-            let data = await fetch(`http://localhost:8080/course/course?limit=${limit}&page=${page}`);
+            let data = await fetch(`http://localhost:8080/subject/list`);
             let json = await data.json();
-            setSubjectObj(json);
+            setSubjects(json);
         } catch (error) {
             console.log(error);
         }
     }
 
-    async function getTeachers(page = 1, limit = 5) {
+    async function getTeachers() {
         try {
-            let data = await fetch(`http://localhost:8080/user/list?limit=${limit}&page=${page}`);
+            let data = await fetch(`http://localhost:8080/user/list`);
             let json = await data.json();
-            setTeacherObj(json);
+            setTeachers(json.data);
         } catch (error) {
             console.log(error);
         }
     }
 
     useEffect(() => {
-        getClasses(pageClass);
-    }, [pageClass, flat]);
-
-    useEffect(() => {
-        getSubjects(pageSubject);
-    }, [pageSubject, flat]);
-
-    useEffect(() => {
-        getTeachers(pageTeacher);
-    }, [pageTeacher, flat]);
+        getClasses();
+        getSubjects();
+        getTeachers();
+    }, [flat]);
 
     return (
         <>
@@ -140,11 +129,11 @@ export default function Profile() {
                                             aria-labelledby="accordion-collapse-heading-2"
                                         >
                                             <ClassRegulation
-                                                classesObj={classesObj}
-                                                page={pageClass}
-                                                setPage={setPageClass}
+                                                classes={classes}
+                                                setClasses={setClasses}
                                                 flat={flat}
                                                 setFlat={setFlat}
+                                                teachers={teachers}
                                             />
                                         </div>
 
@@ -166,13 +155,7 @@ export default function Profile() {
                                             class="hidden"
                                             aria-labelledby="accordion-collapse-heading-3"
                                         >
-                                            <SubjectRegulation
-                                                subjectsObj={subjectObj}
-                                                page={pageSubject}
-                                                setPage={setPageSubject}
-                                                flat={flat}
-                                                setFlat={setFlat}
-                                            />
+                                            {/* <SubjectRegulation subjectsObj={subjects} /> */}
                                         </div>
 
                                         {/* Regulation 5: Change passing standard score */}
@@ -198,19 +181,11 @@ export default function Profile() {
                                     </div>
                                 </div>
 
-                                <AddClassModal flat={flat} setFlat={setFlat} />
-                                <AddSubjectModal flat={flat} setFlat={setFlat} />
+                                <AddClassModal teachers={teachers} flat={flat} setFlat={setFlat} />
+                                <AddSubjectModal />
                             </LayoutFrame>
                         </div>
-                        <LayoutFrame title="Quản lý giáo viên">
-                            <Teachers
-                                teachersObj={teacherObj}
-                                page={pageTeacher}
-                                setPage={setPageTeacher}
-                                flat={flat}
-                                setFlat={setFlat}
-                            />
-                        </LayoutFrame>
+                        <LayoutFrame title="Quản lý giáo viên">{/* <Teachers teachersObj={teachers} /> */}</LayoutFrame>
                     </div>
                 ) : (
                     {

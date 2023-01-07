@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CancelIconModel from "../../icons/CancelIconModel";
 
 const AddClassModal = (props) => {
+    const [teachers, setTeachers] = useState([]);
     const [data, setData] = useState({
         class_id: "",
-        grade: "",
+        grade: 0,
         homeroom_teacher: "",
     });
+
+    useEffect(() => {
+        setTeachers(props.teachers);
+    }, [props.teachers]);
 
     const [status, setStatus] = useState(0);
 
@@ -31,6 +36,13 @@ const AddClassModal = (props) => {
         });
     };
 
+    const resetData = () =>
+        setData({
+            class_id: "",
+            grade: 0,
+            homeroom_teacher: "",
+        });
+
     const AddClass = async () => {
         try {
             const requestOptions = {
@@ -38,9 +50,13 @@ const AddClassModal = (props) => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data),
             };
-            await fetch("http://localhost:8080/class/new", requestOptions);
-            props.setFlat(!props.flat);
-            setStatus(1);
+            let a = await fetch("http://localhost:8080/class/new", requestOptions);
+            if (a.status === 400) throw new Error("Error");
+            else {
+                props.setFlat(!props.flat);
+                setStatus(1);
+                resetData();
+            }
         } catch (error) {
             setStatus(-1);
         } finally {
@@ -101,8 +117,13 @@ const AddClassModal = (props) => {
                                             onChange={changeHomeroom}
                                             class="grow border border-purple-800 bg-purple-50 text-gray-900 text-sm rounded-lg block py-2 pl-9 pr-3 outline-none "
                                         >
-                                            <option selected>--Chọn GVCN--</option>
-                                            <option value={"13"}>13</option>
+                                            <option selected hidden>
+                                                --Chọn GVCN--
+                                            </option>
+                                            <option value={""}>Chưa xác định</option>
+                                            {teachers.map((t) => (
+                                                <option value={t.username}>{t.fullname}</option>
+                                            ))}
                                         </select>
                                     </div>
                                 </div>

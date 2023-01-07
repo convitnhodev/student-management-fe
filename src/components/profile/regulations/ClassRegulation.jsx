@@ -2,38 +2,33 @@ import React, { useEffect, useState } from "react";
 
 const ClassRegulation = (props) => {
     const [allClass, setAllClass] = useState([]);
-    const [page, setPage] = useState({});
+    const [teachers, setTeachers] = useState([]);
+
     const [nClass, setNClass] = useState([]);
 
     useEffect(() => {
-        if (props.classesObj.data == null) {
-            if (props.page - 1 > 0) props.setPage(props.page - 1);
-            else setAllClass([])
-        } else if (props.classesObj.data != undefined) {
-            setPage(props.classesObj.paging);
-            let classObj = props.classesObj.data;
-            setNClass([]);
-            for (let i = 0; i < classObj.length; i++) {
-                classObj[i] = {
-                    ...classObj[i],
-                    isEdit: false,
-                };
-                setNClass((array) => [
-                    ...array,
-                    {
-                        grade: classObj[i].grade,
-                        class_id: classObj[i].class_id,
-                        homeroom_teacher: classObj[i].homeroom_teacher,
-                    },
-                ]);
-            }
-            setAllClass(classObj);
-        }
-    }, [props.classesObj]);
+        setTeachers(props.teachers);
+    }, [props.teachers]);
 
-    const clickPagination = (e) => {
-        props.setPage(parseInt(e.target.innerHTML));
-    };
+    useEffect(() => {
+        setAllClass(props.classes);
+        let classObj = props.classes;
+        for (let i = 0; i < classObj.length; i++) {
+            classObj[i] = {
+                ...classObj[i],
+                isEdit: false,
+            };
+            setNClass((array) => [
+                ...array,
+                {
+                    grade: classObj[i].grade,
+                    class_id: classObj[i].class_id,
+                    homeroom_teacher: classObj[i].homeroom_teacher,
+                },
+            ]);
+        }
+        console.log(1);
+    }, [props.classes]);
 
     const handleEdit = (index) => {
         let setArray = [...allClass];
@@ -56,6 +51,8 @@ const ClassRegulation = (props) => {
         // };
 
         // await fetch("http://localhost:8080/class/")
+
+        
     };
 
     const changeClassID = (e, i) => {
@@ -97,19 +94,19 @@ const ClassRegulation = (props) => {
                 <table className="w-full text-sm text-left text-gray-500">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
                         <tr>
-                            <th scope="col" className="py-3 px-3 text-center">
+                            <th scope="col" className="w-1/6 py-3 px-3 text-center">
                                 Khối
                             </th>
-                            <th scope="col" className="py-3 px-3 text-center">
+                            <th scope="col" className="w-1/6 py-3 px-3 text-center">
                                 Lớp học
                             </th>
-                            <th scope="col" className="py-3 px-3 text-center">
+                            <th scope="col" className="w-12 py-3 px-3 text-center">
                                 Sĩ số
                             </th>
-                            <th scope="col" className="py-3 px-3 text-center">
+                            <th scope="col" className="w-2/6 py-3 px-3 text-center">
                                 GVCN
                             </th>
-                            <th scope="col" className="py-3 px-3 text-center">
+                            <th scope="col" className="w-1/5 py-3 px-3 text-center">
                                 <button
                                     type="button"
                                     data-modal-toggle="add-class-modal"
@@ -138,7 +135,7 @@ const ClassRegulation = (props) => {
                                     </td>
                                     <th
                                         scope="row"
-                                        className="w-1/5 py-4 px-3 font-medium text-gray-900 whitespace-nowrap text-center "
+                                        className="py-4 px-3 font-medium text-gray-900 whitespace-nowrap text-center "
                                     >
                                         {c.isEdit ? (
                                             <input
@@ -151,31 +148,36 @@ const ClassRegulation = (props) => {
                                             c.class_id
                                         )}
                                     </th>
-                                    <td className="w-1/5 py-4 px-3 text-center">{c.total}</td>
-                                    <td className="w-1/5 py-4 px-3 text-center">
+                                    <td className=" py-4 px-3 text-center">{c.total}</td>
+                                    <td className=" py-4 px-3 text-center">
                                         {c.isEdit ? (
                                             <select
                                                 className="border-none w-full bg-purple-100 rounded-sm text-sm font-normal"
                                                 value={nClass[key].homeroom_teacher}
                                                 onChange={(e) => changeHomeRoom(e, key)}
                                             >
-                                                <option value={"nva"} selected={nClass[key].homeroom_teacher === "nva"}>
-                                                    NVA
+                                                <option selected hidden>
+                                                    -- Chọn giáo viên --
                                                 </option>
-                                                <option value={"nvb"} selected={nClass[key].homeroom_teacher === "nvb"}>
-                                                    NVb
-                                                </option>
+                                                {teachers.map((t) => (
+                                                    <option
+                                                        value={t.username}
+                                                        selected={nClass[key].homeroom_teacher === t.username}
+                                                    >
+                                                        {t.fullname}
+                                                    </option>
+                                                ))}
                                             </select>
                                         ) : (
                                             c.homeroom_teacher
                                         )}
                                     </td>
-                                    <td className="w-1/3 py-4 px-3 text-center ">
+                                    <td className="py-4 px-3 text-center">
                                         {c.isEdit ? (
                                             <button
                                                 type="button"
                                                 data-modal-toggle="edit-class-modal"
-                                                className=" font-medium text-green-600 hover:underline pr-6"
+                                                className=" font-medium text-green-600 hover:underline pr-2"
                                                 onClick={() => handleSubmit(key)}
                                             >
                                                 Đồng ý
@@ -184,7 +186,7 @@ const ClassRegulation = (props) => {
                                             <button
                                                 type="button"
                                                 data-modal-toggle="edit-class-modal"
-                                                className="font-medium text-blue-600 hover:underline pr-6"
+                                                className="font-medium text-blue-600 hover:underline pr-3"
                                                 onClick={() => handleEdit(key)}
                                             >
                                                 Sửa
@@ -205,36 +207,6 @@ const ClassRegulation = (props) => {
                     </tbody>
                 </table>
             </div>
-
-            <nav aria-label="Page navigation example">
-                <ul className="mt-6 flex items-center justify-center -space-x-px">
-                    {Array.from(Array(page.total_page), (e, i) => {
-                        if (i + 1 === page.page) {
-                            return (
-                                <li key={i}>
-                                    <button
-                                        className="px-3 py-2 leading-tight text-gray-500 bg-slate-300 border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                                        onClick={clickPagination}
-                                    >
-                                        {i + 1}
-                                    </button>
-                                </li>
-                            );
-                        } else {
-                            return (
-                                <li key={i}>
-                                    <button
-                                        className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                                        onClick={clickPagination}
-                                    >
-                                        {i + 1}
-                                    </button>
-                                </li>
-                            );
-                        }
-                    })}
-                </ul>
-            </nav>
 
             <div className="flex items-center justify-center mb-4 mt-8">
                 <label className="w-28">Sĩ số tối đa: </label>
