@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import CryptoJS from "crypto-js";
+import { useCookies } from "react-cookie";
 
 /**
  * This page allows the user to sign in.
@@ -12,6 +13,7 @@ export default function SignIn() {
   const [values, setValues] = useState({
     remember: false,
   });
+  const [cookies, setCookie] = useCookies(["user"]);
   const [isLogin, setIsLogin] = useState(false);
   const handleChange = (e) => {
     setValues({
@@ -21,7 +23,7 @@ export default function SignIn() {
     });
   };
   useEffect(() => {
-    if (localStorage.getItem("token")) window.location.href = "/Dashboard";
+    if (cookies.user) window.location.href = "/Dashboard";
   }, [isLogin]);
   const [err, setErr] = useState("");
   console.log(values);
@@ -39,11 +41,9 @@ export default function SignIn() {
         values
       );
       const { data } = result;
-      console.log(data);
-      if (data.data.token) {
-        localStorage.setItem("token", data.data.token);
-        localStorage.setItem("user", values.username);
-        localStorage.setItem("role", jwtDecode(data.data.token).payload.role);
+      if (data.data) {
+        let a = jwtDecode(data.data.token);
+        setCookie("user", a, { path: "/" });
         setIsLogin(true);
       }
     } catch (error) {
