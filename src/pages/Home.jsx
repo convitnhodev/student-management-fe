@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import CardClass from '../components/CardClass';
 import { getUser } from '../api/user';
 import { getClass } from '../api/class';
+import { useCookies } from 'react-cookie';
 
 /**
  * This page shows a list of students' information.
@@ -15,6 +16,7 @@ export default function Home() {
   const [homeroomClass, setHomeRoomClass] = React.useState({});
   const [teachingClass, setTeachingClass] = React.useState([]);
   const shouldRender = React.useRef(true);
+  const [cookie, setCookie] = useCookies(['user']);
 
   useEffect(() => {
     const getInfoSubClass = async (classID) => {
@@ -23,7 +25,8 @@ export default function Home() {
       return subClass;
     };
     const getDataUser = async () => {
-      const data = await getUser();
+      const username = cookie.user.payload.username;
+      const data = await getUser(username);
       const userInfo = data.data;
       const dataClass =
         userInfo.class !== '' ? await getClass(userInfo.class) : null;
