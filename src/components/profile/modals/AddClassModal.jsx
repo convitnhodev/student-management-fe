@@ -121,8 +121,8 @@ const AddClassModal = (props) => {
                                                 --Chọn GVCN--
                                             </option>
                                             <option value={""}>Chưa xác định</option>
-                                            {teachers.map((t) => (
-                                                <option value={t.username}>{t.fullname}</option>
+                                            {teachers.map((t, key) => (
+                                                <option key={key} value={t.username}>{t.fullname}</option>
                                             ))}
                                         </select>
                                     </div>

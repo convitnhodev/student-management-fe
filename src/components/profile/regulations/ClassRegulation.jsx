@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 const ClassRegulation = (props) => {
     const [allClass, setAllClass] = useState([]);
     const [teachers, setTeachers] = useState([]);
-
+    const [rules, setRules] = useState({});
+    const [status, setStatus] = useState(0);
     const [nClass, setNClass] = useState([]);
 
     useEffect(() => {
@@ -11,8 +12,13 @@ const ClassRegulation = (props) => {
     }, [props.teachers]);
 
     useEffect(() => {
+        setRules(props.rules);
+    }, [props.rules]);
+
+    useEffect(() => {
         setAllClass(props.classes);
         let classObj = props.classes;
+
         for (let i = 0; i < classObj.length; i++) {
             classObj[i] = {
                 ...classObj[i],
@@ -27,7 +33,6 @@ const ClassRegulation = (props) => {
                 },
             ]);
         }
-        console.log(1);
     }, [props.classes]);
 
     const handleEdit = (index) => {
@@ -51,29 +56,54 @@ const ClassRegulation = (props) => {
         // };
 
         // await fetch("http://localhost:8080/class/")
-
-        
     };
 
-    const changeClassID = (e, i) => {
+    const handleChange = (e, i) => {
         let setArray = [...nClass];
-        let item = { ...setArray[i], class_id: e.target.value };
+        let item = { ...setArray[i], [e.target.name]: e.target.value };
         setArray[i] = item;
         setNClass(setArray);
     };
 
-    const changeGrade = (e, i) => {
-        let setArray = [...nClass];
-        let item = { ...setArray[i], grade: parseInt(e.target.value) };
-        setArray[i] = item;
-        setNClass(setArray);
+    const resetData = () => {
+        setRules({
+            ...rules,
+            MaxStudent: 50,
+        });
     };
 
-    const changeHomeRoom = (e, i) => {
-        let setArray = [...nClass];
-        let item = { ...setArray[i], homeroom_teacher: e.target.value };
-        setArray[i] = item;
-        setNClass(setArray);
+    const changeMaxStudent = (e) => {
+        setRules({
+            ...rules,
+            MaxStudent: parseInt(e.target.value),
+        });
+    };
+
+    const handleSubmitRules = async () => {
+        try {
+            setStatus(0);
+            const requestOptions = {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(rules),
+            };
+
+            let a = await fetch("http://localhost:8080/rules/update", requestOptions);
+            if (a.status > 400) throw new Error("Error");
+            else {
+                setStatus(1);
+                props.setRules({
+                    ...props.rules,
+                    MaxStudent: rules.MaxStudent,
+                });
+            }
+        } catch (error) {
+            setStatus(-1);
+        } finally {
+            setTimeout(() => {
+                setStatus(0);
+            }, 2000);
+        }
     };
 
     const handleDelete = async (i) => {
@@ -126,8 +156,9 @@ const ClassRegulation = (props) => {
                                             <input
                                                 type="text"
                                                 className="border-none w-full bg-purple-100 rounded-sm text-sm font-normal"
+                                                name={"grade"}
                                                 value={nClass[key].grade}
-                                                onChange={(e) => changeGrade(e, key)}
+                                                onChange={(e) => handleChange(e, key)}
                                             />
                                         ) : (
                                             c.grade
@@ -141,8 +172,9 @@ const ClassRegulation = (props) => {
                                             <input
                                                 type="text"
                                                 className="border-none w-full bg-purple-100 rounded-sm text-sm font-normal"
+                                                name={"class_id"}
                                                 value={nClass[key].class_id}
-                                                onChange={(e) => changeClassID(e, key)}
+                                                onChange={(e) => handleChange(e, key)}
                                             />
                                         ) : (
                                             c.class_id
@@ -153,8 +185,9 @@ const ClassRegulation = (props) => {
                                         {c.isEdit ? (
                                             <select
                                                 className="border-none w-full bg-purple-100 rounded-sm text-sm font-normal"
+                                                name="homeroom_teacher"
                                                 value={nClass[key].homeroom_teacher}
-                                                onChange={(e) => changeHomeRoom(e, key)}
+                                                onChange={(e) => handleChange(e, key)}
                                             >
                                                 <option selected hidden>
                                                     -- Chọn giáo viên --
@@ -214,12 +247,16 @@ const ClassRegulation = (props) => {
                     type={"number"}
                     className="placeholder:italic placeholder:text-slate-400 block bg-purple-50 border-purple-800 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none sm:text-sm outline-none border"
                     placeholder="15"
+                    name="MaxStudent"
+                    value={rules.MaxStudent}
+                    onChange={changeMaxStudent}
                 />
             </div>
             <div className="flex flex-row w-full items-center justify-center mt-8">
                 <button
                     type="button"
                     className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-4 mb-2 "
+                    onClick={handleSubmitRules}
                 >
                     Thay đổi
                 </button>
@@ -227,10 +264,13 @@ const ClassRegulation = (props) => {
                 <button
                     type="button"
                     className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-4 mb-2 "
+                    onClick={resetData}
                 >
-                    Xóa hết
+                    Mặc định
                 </button>
             </div>
+            {status === 1 && <p className="text-green-700 text-center text-lg mt-3"> Thay đổi thành công</p>}
+            {status === -1 && <p className="text-red-700 text-center text-lg mt-3"> Thay đổi thất bại</p>}
         </div>
     );
 };

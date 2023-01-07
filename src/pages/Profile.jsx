@@ -31,6 +31,7 @@ export default function Profile() {
     const [classes, setClasses] = useState([]);
     const [subjects, setSubjects] = useState([]);
     const [teachers, setTeachers] = useState([]);
+    const [rules, setRules] = useState({});
 
     async function getClasses() {
         try {
@@ -62,10 +63,21 @@ export default function Profile() {
         }
     }
 
+    async function getRules() {
+        try {
+            let data = await fetch(`http://localhost:8080/rules/get`);
+            let json = await data.json();
+            setRules(json.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
         getClasses();
         getSubjects();
         getTeachers();
+        getRules();
     }, [flat]);
 
     return (
@@ -107,7 +119,7 @@ export default function Profile() {
                                             id="accordion-collapse-body-1"
                                             aria-labelledby="accordion-collapse-heading-1"
                                         >
-                                            <AgeRegulation />
+                                            <AgeRegulation rules={rules} setRules={setRules} />
                                         </div>
 
                                         {/* Regulation 2: Change max class size && Class name-size */}
@@ -134,6 +146,8 @@ export default function Profile() {
                                                 flat={flat}
                                                 setFlat={setFlat}
                                                 teachers={teachers}
+                                                rules={rules}
+                                                setRules={setRules}
                                             />
                                         </div>
 
