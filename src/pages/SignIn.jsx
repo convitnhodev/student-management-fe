@@ -60,7 +60,6 @@ export default function SignIn() {
 									onChange={handleChange}
 								/>
 							</div>
-
 							<div className="mb-6">
 								<input
 									type="password"
