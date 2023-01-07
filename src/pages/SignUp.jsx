@@ -119,7 +119,7 @@ export default function SignUp() {
         sex: isMale,
         address,
         phone,
-        email,
+        gmail: email,
         dob: new Date(birthday).toJSON(),
       };
       userData.password = CryptoJS.MD5(userData.password).toString();

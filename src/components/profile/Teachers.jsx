@@ -286,13 +286,7 @@ const Teachers = (props) => {
                                                     <option
                                                         key={key}
                                                         value={c.class_id}
-                                                        hidden={
-                                                            !(c.homeroom_teacher != ""
-                                                                ? t.username == c.homeroom_teacher
-                                                                    ? true
-                                                                    : false
-                                                                : true)
-                                                        }
+                                                        
                                                     >
                                                         {c.class_id}
                                                     </option>
