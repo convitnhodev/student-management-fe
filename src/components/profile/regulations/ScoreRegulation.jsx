@@ -24,7 +24,7 @@ const ScoreRegulation = (props) => {
                 body: JSON.stringify(data),
             };
 
-            let a = await fetch("http://localhost:8080/rules/update", requestOptions);
+            await fetch("http://localhost:8080/admin/rules/update", requestOptions);
             if (a.status >= 400) throw new Error("Error");
             else {
                 setStatus(1);

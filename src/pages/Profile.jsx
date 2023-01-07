@@ -80,7 +80,7 @@ export default function Profile() {
 
     async function getRules() {
         try {
-            let data = await fetch(`http://localhost:8080/rules/get`);
+            let data = await fetch(`http://localhost:8080/admin/rules/get`);
             let json = await data.json();
             setRules(json.data);
         } catch (error) {

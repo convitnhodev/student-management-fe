@@ -98,7 +98,7 @@ const ClassRegulation = (props) => {
                 body: JSON.stringify(rules),
             };
 
-            let a = await fetch("http://localhost:8080/rules/update", requestOptions);
+            let a = await fetch("http://localhost:8080/admin/rules/update", requestOptions);
             if (a.status >= 400) throw new Error("Error");
             else {
                 setStatus(1);
