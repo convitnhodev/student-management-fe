@@ -1,6 +1,9 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import CardClass from '../components/CardClass';
+import { getUser } from '../api/user';
+import { getClass } from '../api/class';
 
 /**
  * This page shows a list of students' information.
@@ -9,68 +12,55 @@ import CardClass from '../components/CardClass';
  * @returns JSX.Element as a page
  */
 export default function Home() {
-	const [homeroomClass, setHomeRoomClass] = React.useState([]);
-	const [teachingClass, setTeachingClass] = React.useState([]);
+  const [homeroomClass, setHomeRoomClass] = React.useState({});
+  const [teachingClass, setTeachingClass] = React.useState([]);
+  const shouldRender = React.useRef(true);
 
-	const data1 = [
-		{
-			id: 1,
-			name: '10A1',
-			numOfStudents: 30,
-		},
-	];
-	const data = [
-		{
-			id: 1,
-			name: '10A1',
-			numOfStudents: 30,
-		},
-		{
-			id: 2,
-			name: '10A2',
-			numOfStudents: 30,
-		},
-		{
-			id: 3,
-			name: '10A2',
-			numOfStudents: 30,
-		},
-		{
-			id: 4,
-			name: '10A2',
-			numOfStudents: 30,
-		},
-		{
-			id: 5,
-			name: '10A2',
-			numOfStudents: 30,
-		},
-		{
-			id: 6,
-			name: '10A2',
-			numOfStudents: 30,
-		},
-	];
-	React.useEffect(() => {
-		setHomeRoomClass(data1);
-		setTeachingClass(data);
-	}, []);
+  useEffect(() => {
+    const getInfoSubClass = async (classID) => {
+      const data = await getClass(classID);
+      const subClass = data.data;
+      return subClass;
+    };
+    const getDataUser = async () => {
+      const data = await getUser();
+      const userInfo = data.data;
+      const dataClass =
+        userInfo.class !== '' ? await getClass(userInfo.class) : null;
+      const mainClass = dataClass !== null ? dataClass.data : null;
+      setHomeRoomClass(mainClass);
 
-	return (
-		<div className="flex flex-col items-center justify-center min-h-screen py-2">
-			<main className="flex flex-col items-center justify-around w-full flex-1 px-20">
-				<h1 className="text-5xl font-bold my-10">Lớp đang chủ nhiệm</h1>
-				<div className="grid grid-cols-3 gap-4">
-					{homeroomClass.map((item) => (
-						<CardClass
-							key={item.id}
-							id={item.id}
-							name={item.name}
-							numOfStudents={item.numOfStudents}
-						/>
-					))}
-					{/* one col add class */}
-					{/* <div className="group flex flex-col justify-between rounded-sm bg-white p-8 shadow-xl transition-shadow hover:shadow-lg">
+      if (userInfo.teaching_classes !== null) {
+        console.log(userInfo.teaching_classes);
+        userInfo.teaching_classes.forEach(async (classID) => {
+          const subClass = await getInfoSubClass(classID);
+          setTeachingClass((teachingClass) => [...teachingClass, subClass]);
+        });
+      }
+      //   setTeachingClass(data.teachingClass);
+    };
+    if (shouldRender.current) {
+      shouldRender.current = false;
+      getDataUser();
+    }
+  }, []);
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+      <main className="flex flex-col items-center justify-around w-full flex-1 px-20">
+        <h1 className="text-5xl font-bold my-10">Lớp đang chủ nhiệm</h1>
+        <div className="grid grid-cols-3 gap-4">
+          {homeroomClass !== null ? (
+            <CardClass
+              id={homeroomClass.class_id}
+              name={homeroomClass.class_id}
+              numOfStudents={homeroomClass.total}
+            />
+          ) : (
+            <div></div>
+          )}
+          {/* one col add class */}
+          {/* <div className="group flex flex-col justify-between rounded-sm bg-white p-8 shadow-xl transition-shadow hover:shadow-lg">
             <Link
               to={'class/add'}
               className="group flex flex-col justify-between rounded-sm bg-slate-100 border-dashed border-2 border-sky-500 p-8"
@@ -85,19 +75,24 @@ export default function Home() {
               </div>
             </Link>
           </div> */}
-				</div>
+        </div>
 
-				<h1 className="text-5xl font-bold my-10">Lớp đang dạy</h1>
-				<div className="grid grid-cols-3 gap-4">
-					{teachingClass.map((item) => (
-						<CardClass
-							key={item.id}
-							id={item.id}
-							name={item.name}
-							numOfStudents={item.numOfStudents}
-						/>
-					))}
-					{/* <div className="group flex flex-col justify-between rounded-sm bg-white p-8 shadow-xl transition-shadow hover:shadow-lg">
+        <h1 className="text-5xl font-bold my-10">Lớp đang dạy</h1>
+        <div className="grid grid-cols-3 gap-4">
+          {teachingClass.length > 0 ? (
+            teachingClass.map((item) => (
+              <CardClass
+                key={item.class_id}
+                id={item.class_id}
+                name={item.class_id}
+                numOfStudents={item.total}
+              />
+            ))
+          ) : (
+            <div></div>
+          )}
+
+          {/* <div className="group flex flex-col justify-between rounded-sm bg-white p-8 shadow-xl transition-shadow hover:shadow-lg">
             <Link
               to={'class/add'}
               className="group flex flex-col justify-between rounded-sm bg-slate-100 border-dashed border-2 border-sky-500 p-8"
@@ -112,8 +107,8 @@ export default function Home() {
               </div>
             </Link>
           </div> */}
-				</div>
-			</main>
-		</div>
-	);
+        </div>
+      </main>
+    </div>
+  );
 }
