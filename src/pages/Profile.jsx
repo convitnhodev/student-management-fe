@@ -204,7 +204,15 @@ export default function Profile() {
                                 <AddSubjectModal flat={flat} setFlat={setFlat} />
                             </LayoutFrame>
                         </div>
-                        <LayoutFrame title="Quản lý giáo viên">{/* <Teachers teachersObj={teachers} /> */}</LayoutFrame>
+                        <LayoutFrame title="Quản lý giáo viên">
+                            <Teachers
+                                teachers={teachers}
+                                setTeachers={setTeachers}
+                                flat={flat}
+                                setFlat={setFlat}
+                                classes={classes}
+                            />
+                        </LayoutFrame>
                     </div>
                 ) : (
                     {

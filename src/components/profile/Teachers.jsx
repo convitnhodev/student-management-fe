@@ -2,43 +2,40 @@ import React, { useState, useEffect } from "react";
 
 const Teachers = (props) => {
     const [allTeachers, setAllTeachers] = useState([]);
-    const [page, setPage] = useState({});
     const [nTeachers, setNTeachers] = useState([]);
+    const [classes, setClasses] = useState([]);
 
     useEffect(() => {
-        if (props.teachersObj.data == null) {
-            if (props.page - 1 > 0) props.setPage(props.page - 1);
-            else setAllTeachers([])
-        } else if (props.teachersObj.data != undefined) {
-            console.log(props.teachersObj);
-            setPage(props.teachersObj.paging);
-            let teachersObj = props.teachersObj.data;
-            setNTeachers([]);
-            for (let i = 0; i < teachersObj.length; i++) {
-                teachersObj[i] = {
-                    ...teachersObj[i],
+        setClasses(props.classes);
+    }, [props.classes]);
+
+    useEffect(() => {
+        setNTeachers([]);
+        if (props.teachers === null) setAllTeachers([]);
+        else {
+            setAllTeachers(props.teachers);
+
+            let teachers = props.teachers;
+            for (let i = 0; i < teachers.length; i++) {
+                teachers[i] = {
+                    ...teachers[i],
                     isEdit: false,
                 };
                 setNTeachers((array) => [
                     ...array,
                     {
-                        fullName: teachersObj[i].full_name,
-                        Class: teachersObj[i].class,
-                        role: teachersObj[i].role,
-                        gmail: teachersObj[i].gmail,
-                        DOB: teachersObj[i].dob,
-                        address: teachersObj[i].address,
-                        sex: teachersObj[i].sex,
+                        fullname: teachers[i].fullname,
+                        class: teachers[i].class,
+                        phone: teachers[i].phone,
+                        gmail: teachers[i].gmail,
+                        address: teachers[i].address,
+                        sex: teachers[i].sex,
+                        dob: teachers[i].dob,
                     },
                 ]);
             }
-            setAllTeachers(teachersObj);
         }
-    }, [props]);
-
-    const clickPagination = (e) => {
-        props.setPage(parseInt(e.target.innerHTML));
-    };
+    }, [props.teachers]);
 
     const handleEdit = (index) => {
         let setArray = [...allTeachers];
@@ -47,38 +44,60 @@ const Teachers = (props) => {
         setAllTeachers(setArray);
     };
 
+    const resetEdit = (index) => {
+        let setArray = [...nTeachers];
+        let item = {
+            fullname: allTeachers[index].fullname,
+            class: allTeachers[index].class,
+            phone: allTeachers[index].phone,
+            gmail: allTeachers[index].gmail,
+            address: allTeachers[index].address,
+            sex: allTeachers[index].sex,
+            dob: allTeachers[index].dob,
+        };
+        setArray[index] = item;
+        setNTeachers(setArray);
+    };
+
     const handleSubmit = async (index) => {
         let setArray = [...allTeachers];
         let item = { ...setArray[index], isEdit: !setArray[index].isEdit };
         setArray[index] = item;
         setAllTeachers(setArray);
 
-        console.log(nTeachers[index]);
-        // call API
-        // const requestOptions = {
-        //     method: "POST",
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify(nClass[index]),
-        // };
+        let dataUpdate = {
+            ...nTeachers[index],
+            username: allTeachers[index].username,
+            dob: new Date(nTeachers[index].dob).toJSON(),
+        };
 
-        // await fetch("http://localhost:8080/class/")
+        // call API
+        const requestOptions = {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dataUpdate),
+        };
+        
+        await fetch("http://localhost:8080/user/update", requestOptions);
+        resetEdit(index);
+        props.setFlat(!props.flat);
     };
 
     const handleChange = (e, i) => {
         const value = e.target.value;
-        let setArray = [...nSubject];
+        let setArray = [...nTeachers];
         let item = { ...setArray[i], [e.target.name]: value };
         setArray[i] = item;
         setNTeachers(setArray);
     };
 
+    // TODOS
     const handleDelete = async (i) => {
         try {
             const requestOptions = {
                 method: "DELETE",
             };
             // await fetch(`http://localhost:8080/course/delete?id=${allSubject[i].course_id}`, requestOptions);
-            props.setPage(page.page);
             props.setFlat(!props.flat);
         } catch (error) {
             console.log(error);
@@ -88,10 +107,9 @@ const Teachers = (props) => {
     const handleAccept = async (i) => {
         try {
             const requestOptions = {
-                method: "POST",
+                method: "PATCH",
             };
-            // await fetch(`http://localhost:8080/acp/user?id=${allSubject[i].course_id}`, requestOptions);
-            props.setPage(page.page);
+            await fetch(`http://localhost:8080/user/accept?username=${allTeachers[i].username}`, requestOptions);
             props.setFlat(!props.flat);
         } catch (error) {
             console.log(error);
@@ -104,15 +122,16 @@ const Teachers = (props) => {
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th className="w-1/12 py-3 px-3">Username</th>
-                            <th className="w-2/12 py-3 px-3">Họ tên</th>
-                            <th className="w-1/12 py-3 px-3">Ngày sinh</th>
-                            <th className="w-1/12 py-3 px-3 text-center">Giới tính</th>
-                            <th className="w-1/12 py-3 px-3">Địa chỉ</th>
-                            <th className="w-1/12 py-3 px-3">Email</th>
-                            <th className="w-1/12 py-3 px-3">Chức vụ</th>
-                            <th className="w-1/12 py-3 px-1 text-center">Chủ nhiệm</th>
-                            <th className="w-2/12 py-3 px-3 text-center"></th>
+                            <th className="w-20 py-3 px-3">Username</th>
+                            <th className="w-28 py-3 px-3">Họ tên</th>
+                            <th className="w-20 py-3 px-3">Ngày sinh</th>
+                            <th className="w-16 py-3 px-3 text-center">Giới tính</th>
+                            <th className="w-28 py-3 px-3">Địa chỉ</th>
+                            <th className="w-32 py-3 px-3">Email</th>
+                            <th className="w-20 py-3 px-3">Chức vụ</th>
+                            <th className="w-20 py-3 px-3">ĐT</th>
+                            <th className="w-20 py-3 px-1 text-center">Chủ nhiệm</th>
+                            <th className="py-3 px-3 text-center"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -122,56 +141,72 @@ const Teachers = (props) => {
                                     key={i}
                                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                                 >
-                                    <th className="w-1/12 py-3 px-3">
-                                        <p className="w-28 overflow-hidden whitespace-nowrap text-ellipsis">
-                                            {t.user_name}
+                                    <th className="py-3 px-3">
+                                        <p className="w-20 overflow-hidden whitespace-nowrap text-ellipsis">
+                                            {t.username}
                                         </p>
                                     </th>
-                                    <td className="w-2/12 py-3 px-3  whitespace-nowrap dark:text-white">
+                                    <td className="py-3 px-3 whitespace-nowrap dark:text-white">
                                         {t.isEdit ? (
                                             <input
                                                 type="text"
-                                                className="w-36 px-2 py-1 border-none bg-purple-100 rounded-sm text-sm font-normal"
-                                                name="fullName"
-                                                value={nTeachers[i].fullName}
+                                                className="w-28 px-2 py-1 border-none bg-purple-100 rounded-sm text-sm font-normal"
+                                                name="fullname"
+                                                value={nTeachers[i].fullname}
                                                 onChange={(e) => handleChange(e, i)}
                                             />
                                         ) : (
-                                            t.full_name
+                                            <p className="w-28 overflow-hidden whitespace-nowrap text-ellipsis">
+                                                {t.fullname}
+                                            </p>
                                         )}
                                     </td>
-                                    <td className="w-1/12 py-3 px-3">
+                                    <td className="py-3 px-3">
                                         {t.isEdit ? (
                                             <input
                                                 type="date"
-                                                className="w-28 px-2 py-1 border-none bg-purple-100 rounded-sm text-sm font-normal"
-                                                name="DOB"
-                                                value={nTeachers[i].DOB}
+                                                className="w-20 px-2 py-1 border-none bg-purple-100 rounded-sm text-sm font-normal"
+                                                name="dob"
+                                                value={new Date(nTeachers[i].dob).toISOString().substring(0, 10)}
                                                 onChange={(e) => handleChange(e, i)}
                                             />
                                         ) : (
-                                            "22/12/2002"
+                                            <p className="w-20 overflow-hidden whitespace-nowrap text-ellipsis">
+                                                {new Date(t.dob).getDate() +
+                                                    "/" +
+                                                    parseInt(new Date(t.dob).getMonth() + 1) +
+                                                    "/" +
+                                                    new Date(t.dob).getFullYear()}
+                                            </p>
                                         )}
                                     </td>
-                                    <td className="w-1/12 py-3 px-3 text-center">
+                                    <td className="py-3 px-3 text-center">
                                         {t.isEdit ? (
                                             <select
                                                 className="w-16 px-2 py-1 border-none bg-purple-100 rounded-sm text-sm font-normal"
                                                 name="sex"
                                                 value={nTeachers[i].sex}
-                                                onChange={(e) => handleChange(e, i)}
+                                                onChange={(e) => {
+                                                    const value = e.target.value;
+                                                    let setArray = [...nTeachers];
+                                                    let item = { ...setArray[i], sex: !!value };
+                                                    setArray[i] = item;
+                                                    setNTeachers(setArray);
+                                                }}
                                             >
-                                                <option value={"male"}>Nam</option>
-                                                <option value={"female"}>Nữ</option>
+                                                <option value={true}>Nam</option>
+                                                <option value={false}>Nữ</option>
                                             </select>
                                         ) : (
-                                            "Nam"
+                                            <p className="w-16 overflow-hidden whitespace-nowrap text-ellipsis">
+                                                {t.sex == true ? "Nam" : "Nữ"}
+                                            </p>
                                         )}
                                     </td>
-                                    <td className="w-1/12 py-3 px-3">
+                                    <td className="py-3 px-3">
                                         {!t.isEdit ? (
                                             <p className="w-28 overflow-hidden whitespace-nowrap text-ellipsis">
-                                                227 NVC, Q5, HCM asdf asdf asdf ádf
+                                                {t.address}
                                             </p>
                                         ) : (
                                             <input
@@ -183,49 +218,90 @@ const Teachers = (props) => {
                                             />
                                         )}
                                     </td>
-                                    <td className="w-1/12 py-3 px-3">
+                                    <td className="py-3 px-3">
                                         {!t.isEdit ? (
-                                            <p className="w-28 overflow-hidden whitespace-nowrap text-ellipsis">
+                                            <p className="w-32 overflow-hidden whitespace-nowrap text-ellipsis">
                                                 {t.gmail}
                                             </p>
                                         ) : (
                                             <input
                                                 type="email"
-                                                className="border-none w-28 px-2 py-1 bg-purple-100 rounded-sm text-sm font-normal"
-                                                name="email"
+                                                className="border-none w-32 px-2 py-1 bg-purple-100 rounded-sm text-sm font-normal"
+                                                name="gmail"
                                                 value={nTeachers[i].gmail}
                                                 onChange={(e) => handleChange(e, i)}
                                             />
                                         )}
                                     </td>
-                                    <td className="w-1/12 py-3 px-1">
+                                    <td className="py-3 px-3">
                                         {t.isEdit ? (
                                             <select
-                                                className="w-20  px-2 py-1 border-none bg-purple-100 rounded-sm text-sm font-normal"
+                                                className="w-24 px-2 py-1 border-none bg-purple-100 rounded-sm text-sm font-normal"
                                                 name="role"
                                                 value={nTeachers[i].role}
-                                                onChange={(e) => handleChange(e, i)}
+                                                onChange={(e) => {
+                                                    const value = e.target.value;
+                                                    let setArray = [...nTeachers];
+                                                    let item = { ...setArray[i], role: parseInt(value) };
+                                                    setArray[i] = item;
+                                                    setNTeachers(setArray);
+                                                }}
                                             >
-                                                <option value={"teacher"}>Giáo viên</option>
-                                                <option value={"admin"}>Hiệu trưởng</option>
+                                                <option value={0}>Giáo viên</option>
+                                                <option value={1}>Admin</option>
                                             </select>
                                         ) : (
-                                            (t.role === 0 && "Giáo viên") || (t.role === 1 && "Hiệu trưởng")
+                                            <p className="w-24 overflow-hidden whitespace-nowrap text-ellipsis">
+                                                {(t.role === 0 && "Giáo viên") || (t.role === 1 && "Admin")}
+                                            </p>
                                         )}
                                     </td>
-                                    <td className="w-1/12 py-3 px-1 text-center">
+                                    <td className="py-3 px-3">
+                                        {!t.isEdit ? (
+                                            <p className="w-20 overflow-hidden whitespace-nowrap text-ellipsis">
+                                                {t.phone}
+                                            </p>
+                                        ) : (
+                                            <input
+                                                type="email"
+                                                className="border-none w-20 px-2 py-1 bg-purple-100 rounded-sm text-sm font-normal"
+                                                name="phone"
+                                                value={nTeachers[i].phone}
+                                                onChange={(e) => handleChange(e, i)}
+                                            />
+                                        )}
+                                    </td>
+                                    <td className="py-3 px-1 text-center">
                                         {t.isEdit ? (
                                             <select
-                                                className="w-20  px-2 py-1 border-none bg-purple-100 rounded-sm text-sm font-normal"
-                                                name="Class"
-                                                value={nTeachers[i].Class}
+                                                className="w-20 px-2 py-1 border-none bg-purple-100 rounded-sm text-sm font-normal"
+                                                name="class"
+                                                value={nTeachers[i].class}
                                                 onChange={(e) => handleChange(e, i)}
                                             >
-                                                <option>12a1</option>
-                                                <option>12a2</option>
+                                                <option value={""} selected>
+                                                    Không
+                                                </option>
+                                                {classes.map((c, key) => (
+                                                    <option
+                                                        key={key}
+                                                        value={c.class_id}
+                                                        hidden={
+                                                            !(c.homeroom_teacher != ""
+                                                                ? t.username == c.homeroom_teacher
+                                                                    ? true
+                                                                    : false
+                                                                : true)
+                                                        }
+                                                    >
+                                                        {c.class_id}
+                                                    </option>
+                                                ))}
                                             </select>
                                         ) : (
-                                            t.Class
+                                            <p className="w-20 overflow-hidden whitespace-nowrap text-ellipsis">
+                                                {t.class}
+                                            </p>
                                         )}
                                     </td>
                                     <td className="py-3 flex items-center justify-center">
@@ -273,36 +349,6 @@ const Teachers = (props) => {
                     </tbody>
                 </table>
             </div>
-
-            <nav aria-label="Page navigation example">
-                <ul className="mt-6 flex items-center justify-center -space-x-px">
-                    {Array.from(Array(page.total_page), (e, i) => {
-                        if (i + 1 === page.page) {
-                            return (
-                                <li key={i}>
-                                    <button
-                                        className="px-3 py-2 leading-tight text-gray-500 bg-slate-300 border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                                        onClick={clickPagination}
-                                    >
-                                        {i + 1}
-                                    </button>
-                                </li>
-                            );
-                        } else {
-                            return (
-                                <li key={i}>
-                                    <button
-                                        className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                                        onClick={clickPagination}
-                                    >
-                                        {i + 1}
-                                    </button>
-                                </li>
-                            );
-                        }
-                    })}
-                </ul>
-            </nav>
         </>
     );
 };
