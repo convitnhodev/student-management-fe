@@ -102,7 +102,7 @@ export default function Notify() {
                     scope="row"
                     className="py-4 px-12 font-medium text-violet-900 whitespace-nowrap"
                   >
-                    {row.username} want to join your group
+                    {row.username} muốn tham gia vào hệ thống
                   </td>
                   <td
                     scope="row"
